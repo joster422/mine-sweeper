@@ -1,0 +1,11 @@
+<div class="container">
+  <div *ngFor="let row of MineSweeperService.grid">
+    <span *ngFor="let cell of row"
+      [class.mark]="cell.mark"
+      [class.hidden]="cell.hidden"
+      (click)="check(cell)"
+      (contextmenu)="mark($event, cell)">
+      {{cell.score}}
+    </span>
+  </div>
+</div>

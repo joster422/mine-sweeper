@@ -1,0 +1,22 @@
+.container {
+    div {
+        display: flex;
+        span {
+            flex: 1 0 auto;
+            text-align: center;
+            padding: 1em 0;
+            margin: .1em;
+            user-select: none;
+        }
+    }
+}
+
+.hidden {
+    background-color: black;
+    cursor: pointer;
+}
+.mark {
+    background-color: #d9534f;
+    color: #d9534f;
+    cursor: not-allowed;
+}
