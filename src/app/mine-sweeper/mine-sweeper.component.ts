@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { MineSweeperService } from '../mine-sweeper.service'
+import { BotService } from '../bot.service';
 
 @Component({
   selector: 'app-mine-sweeper',
@@ -15,10 +16,19 @@ export class MineSweeperComponent implements OnInit {
     '"My leg!!" -You'
   ]
 
-  constructor(private MineSweeperService: MineSweeperService) { }
+  constructor(
+    private MineSweeperService: MineSweeperService,
+    private BotService: BotService
+  ) { }
 
   ngOnInit() {
     this.MineSweeperService.start()
+
+    setInterval(() => {
+      let move = this.BotService.getMove(this.MineSweeperService.grid);
+
+      this.check(move);
+    }, 5000);
   }
 
   check(cell: Cell) {
@@ -26,7 +36,7 @@ export class MineSweeperComponent implements OnInit {
 
     if(this.MineSweeperService.dig(cell)) {
       let losingPhrase = this.losingPhrases[Math.floor(Math.random() * this.losingPhrases.length)]
-      alert(losingPhrase)
+      console.error(losingPhrase)
     }
   }
 

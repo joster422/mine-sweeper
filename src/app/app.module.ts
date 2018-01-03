@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { MineSweeperComponent } from './mine-sweeper/mine-sweeper.component';
 
 import { MineSweeperService } from './mine-sweeper.service';
+import { BotService } from './bot.service';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MineSweeperService } from './mine-sweeper.service';
     BrowserModule
   ],
   providers: [
+    BotService,
     MineSweeperService
   ],
   bootstrap: [AppComponent]
