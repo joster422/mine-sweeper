@@ -19,7 +19,8 @@ export class MineSweeperService {
           score: 0,
           mine: false,
           hidden: true,
-          mark: false
+          mark: false,
+          probability: 0
         }
       }
     }
@@ -96,5 +97,6 @@ interface Cell {
   score: number,
   mine: boolean,
   hidden: boolean,
-  mark: boolean
+  mark: boolean,
+  probability: number
 }

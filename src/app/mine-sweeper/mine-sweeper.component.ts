@@ -55,5 +55,6 @@ interface Cell {
   score: number,
   mine: boolean,
   hidden: boolean,
-  mark: boolean
+  mark: boolean,
+  probability: number
 }
