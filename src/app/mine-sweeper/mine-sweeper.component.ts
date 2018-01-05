@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { MineSweeperService } from '../mine-sweeper.service'
+import { MineSweeperService, Cell } from '../mine-sweeper.service'
 import { BotService } from '../bot.service';
 
 @Component({
@@ -24,11 +24,22 @@ export class MineSweeperComponent implements OnInit {
   ngOnInit() {
     this.MineSweeperService.start()
 
-    setInterval(() => {
-      let move = this.BotService.getMove(this.MineSweeperService.grid);
+    this.botLoop(this.MineSweeperService.grid)
+    console.log('The game is over!')
 
-      this.check(move);
-    }, 5000);
+    // setInterval(() => {
+    //   let move = this.BotService.getMove(this.MineSweeperService.grid)
+    //   this.check(move);
+    // }, 5000);
+  }
+
+  botLoop(grid: Cell[][]) {
+    this.BotService.getMovePromise(this.MineSweeperService.grid)
+      // .then((move) => move == null || this.botLoop(this.MineSweeperService.grid))
+      .then((move) => {
+        console.log(move)
+        debugger
+      })
   }
 
   check(cell: Cell) {
@@ -47,14 +58,4 @@ export class MineSweeperComponent implements OnInit {
 
     cell.mark = !cell.mark
   }
-}
-
-interface Cell {
-  x: number,
-  y: number,
-  score: number,
-  mine: boolean,
-  hidden: boolean,
-  mark: boolean,
-  probability: number
 }
