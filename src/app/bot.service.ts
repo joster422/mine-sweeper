@@ -3,159 +3,151 @@ import { Cell } from './mine-sweeper.service';
 
 @Injectable()
 export class BotService {
+  timeout = 300
 
   constructor() { }
 
-  timeoutLength: number = 1000;
-  public getMovePromise(grid: Cell[][]): Promise<Cell> {
-    return new Promise((resolve, reject) => {
-      // Assign propabilties
-      let assignCount = 0
-      for(let x = 0; x < grid.length; x++) {
-        for(let y = 0; y < grid[x].length; y++) {
-          let cell = grid[x][y]
-          // Analyze not hidden cells, otherwise cheating
-          // Cells that have mines around them
-          if(!cell.hidden && cell.score != 0) {
-            let neighbors = this.getNeighbors(cell, grid)
-
-            let hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden)
-
-            // Only care if there are cells worth analyzing
-            if(hiddenNeighbors.length > 0) {
-              let probability = cell.score / hiddenNeighbors.length
-
-              hiddenNeighbors.forEach((neighbor) => {
-                neighbor.probability = probability > neighbor.probability ? probability : neighbor.probability
-                neighbor.flashy = true
-              })
-
-              window.setTimeout(() => {
-                hiddenNeighbors.forEach((neighbor) => {
-                  neighbor.flashy = false;
-                })
-              }, assignCount * this.timeoutLength);
-              assignCount = assignCount + 1
-            }
-          }
-        }
-      }
-
-      // Utilize propabilties
-      let utilizeCount = 0;
-      for(let x = 0; x < grid.length; x++) {
-        for(let y = 0; y < grid[x].length; y++) {
-          let cell = grid[x][y]
-          
-          if(!cell.hidden && cell.score != 0) {
-
-            let neighbors = this.getNeighbors(cell, grid)
-    
-            let hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden)
-    
-            if(hiddenNeighbors.length > 1) {
-              let combinations = this.combinations(hiddenNeighbors)
-    
-              // Only care about valid cases
-              combinations = combinations.filter((x) => x.length != hiddenNeighbors.length)
-    
-              for(let i = 0; i < combinations.length; i++) {
-                let combination = combinations[i]
-                let total = combination.reduce((acc, val) => acc + val.probability, 0)
-
-                combination.forEach((neighbor) => {
-                  neighbor.flashy = true
-                })
-                window.setTimeout(() => {
-                  combination.forEach((neighbor) => {
-                    neighbor.flashy = false
-                  })
-                }, (assignCount + utilizeCount) * this.timeoutLength)
-                utilizeCount = utilizeCount + 1
-
-                if(Math.floor(total) == cell.score) {
-                  // this combination contains enough mines so others are safe
-                  let safe = hiddenNeighbors.filter(neighbor => combination.indexOf(neighbor) == -1)
-                  
-                  window.setTimeout(() => {
-                    resolve(this.choose(safe))
-                  }, (assignCount + utilizeCount) * this.timeoutLength)
-                  return
-                }
-              }
-            }
-          }
-        }
-      }
-
-      // Can't find a spot so choose randomly
-      let hiddenCells = grid.reduce((acc, val) => acc.concat(val.filter(cell => cell.hidden)), [])
-      setTimeout(() => {
-        resolve(this.choose(hiddenCells))
-      }, (assignCount + utilizeCount) * this.timeoutLength)
-    })
-  }
-
-  public getMove(grid: Cell[][]): Cell {
-
+  async getMoveAsync(grid: Cell[][]) {
     // Assign propabilties
-    grid.forEach(row => row.forEach(cell => {
-      // Analyze not hidden cells, otherwise cheating
-      // Cells that have mines around them
-      if(!cell.hidden && cell.score != 0) {
+    for(let x = 0; x < grid.length; x++) {
+      for(let y = 0; y < grid[x].length; y++) {
+        let cell = grid[x][y]
+
+        if(cell.hidden || cell.score == 0) continue
+
         let neighbors = this.getNeighbors(cell, grid)
 
         let hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden)
 
-        // Only care if there are cells worth analyzing
-        if(hiddenNeighbors.length > 0) {
-          let probability = cell.score / hiddenNeighbors.length
+        if(hiddenNeighbors.length == 0) continue
 
-          hiddenNeighbors.forEach((neighbor) => {
-            neighbor.probability = probability > neighbor.probability ? probability : neighbor.probability
-          })
+        let mineNeighbors = hiddenNeighbors.filter(neighbor => neighbor.probability == 1)
+
+        if(mineNeighbors.length == cell.score) {
+          let safe = hiddenNeighbors.filter(neighbor => mineNeighbors.indexOf(neighbor) == -1)
+          return this.choose(safe)
+        }
+
+        let probability = cell.score / hiddenNeighbors.length
+
+        for(let i = 0; i < hiddenNeighbors.length; i++) {
+          let neighbor = hiddenNeighbors[i]
+
+          if(probability <= neighbor.probability) continue 
+
+          neighbor.probability =  probability
+
+          neighbor.flashy = true
+          await this.delay(this.timeout)
+          neighbor.flashy = false
         }
       }
-    }))
-
+    }
     // Utilize propabilties
     for(let x = 0; x < grid.length; x++) {
       for(let y = 0; y < grid[x].length; y++) {
         let cell = grid[x][y]
-        
-        if(!cell.hidden && cell.score != 0) {
-          let neighbors = this.getNeighbors(cell, grid)
-  
-          let hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden)
-  
-          if(hiddenNeighbors.length > 1) {
-            let combinations = this.combinations(hiddenNeighbors)
-  
-            // Only care about valid cases
-            combinations = combinations.filter((x) => x.length != hiddenNeighbors.length)
-  
-            for(let i = 0; i < combinations.length; i++) {
-              let combination = combinations[i]
-              let total = combination.reduce((acc, val) => acc + val.probability, 0)
 
-              if(Math.floor(total) == cell.score) {
-                // this combination contains enough mines so others are safe
-                let safe = hiddenNeighbors.filter(neighbor => combination.indexOf(neighbor) == -1)
-                return this.choose(safe)
-              }
-            }
-          }
+        if(cell.hidden || cell.score == 0) continue
+        
+        let neighbors = this.getNeighbors(cell, grid)
+        let hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden)
+
+        if(hiddenNeighbors.length == 0) continue
+        
+        let combinations = this.combinations(hiddenNeighbors)
+
+        // Only care about valid cases
+        combinations = combinations.filter((x) => x.length != hiddenNeighbors.length)
+
+        for(let i = 0; i < combinations.length; i++) {
+          let combination = combinations[i]
+          let total = combination.reduce((acc, val) => acc + val.probability, 0)
+
+          combination.forEach((cell) => cell.flashy = true)
+          await this.delay(this.timeout)
+          combination.forEach((cell) => cell.flashy = false)
+
+          if(Math.floor(total) != cell.score) continue
+
+          // this combination contains enough mines so others are safe
+          let safe = hiddenNeighbors.filter(neighbor => combination.indexOf(neighbor) == -1)
+          return this.choose(safe)
         }
       }
     }
+    // Can't find a spot so choose randomly
+    console.log('Cant find a spot')
+    let hiddenCells = grid.reduce((acc, val) => acc.concat(val.filter(cell => cell.hidden)), [])
+    return this.choose(hiddenCells)
+  }
 
+  private delay(t) {
+    return new Promise(r => window.setTimeout(() => r(), t))
+  }
+
+  public getMove(grid: Cell[][]): Cell {
+    // Assign propabilties
+    for(let x = 0; x < grid.length; x++) {
+      for(let y = 0; y < grid[x].length; y++) {
+        let cell = grid[x][y]
+
+        if(cell.hidden || cell.score == 0) continue
+
+        let neighbors = this.getNeighbors(cell, grid)
+        let hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden)
+
+        if(hiddenNeighbors.length == 0) continue
+
+        let probability = cell.score / hiddenNeighbors.length
+
+        for(let i = 0; i < hiddenNeighbors.length; i++) {
+          let neighbor = hiddenNeighbors[i]
+
+          neighbor.probability = probability > neighbor.probability ? probability : neighbor.probability
+        }
+      }
+    }
+    // Utilize propabilties
+    for(let x = 0; x < grid.length; x++) {
+      for(let y = 0; y < grid[x].length; y++) {
+        let cell = grid[x][y]
+
+        if(cell.hidden || cell.score == 0) continue
+        
+        let neighbors = this.getNeighbors(cell, grid)
+        let hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden)
+
+        if(hiddenNeighbors.length == 0) continue
+
+        let mineNeighbors = hiddenNeighbors.filter(neighbor => neighbor.probability == 1)
+
+        if(mineNeighbors.length == cell.score) {
+          let safe = hiddenNeighbors.filter(neighbor => mineNeighbors.indexOf(neighbor) == -1)
+          return this.choose(safe)
+        }
+        
+        let combinations = this.combinations(hiddenNeighbors).filter((x) => x.length != hiddenNeighbors.length)
+
+        for(let i = 0; i < combinations.length; i++) {
+          let combination = combinations[i]
+          let total = combination.reduce((acc, val) => acc + val.probability, 0)
+
+          if(Math.floor(total) != cell.score) continue
+
+          // this combination contains enough mines so others are safe
+          let safe = hiddenNeighbors.filter(neighbor => combination.indexOf(neighbor) == -1)
+          return this.choose(safe)
+        }
+      }
+    }
     // Can't find a spot so choose randomly
     let hiddenCells = grid.reduce((acc, val) => acc.concat(val.filter(cell => cell.hidden)), [])
     return this.choose(hiddenCells)
   }
 
   private combinations(list) {
-    let res = []
+    let ret = []
     for (let i = 1; i < (1 << list.length); i++) {
       let combination = []
       for (let j = 0; j < list.length; j++) {
@@ -163,9 +155,9 @@ export class BotService {
           combination.push(list[j])
         }
       }
-      res.push(combination)
+      ret.push(combination)
     }
-    return res;
+    return ret;
   }
 
   private getNeighbors(cell: Cell, grid: Cell[][]): Cell[] {
@@ -181,6 +173,7 @@ export class BotService {
   private choose(cells: Cell[]): Cell {
     if(cells.length == 0) {
       console.error('Bot choose')
+      return null
     }
     return cells.length == 1 ? cells[0] : cells[Math.floor(Math.random() * cells.length)]
   }

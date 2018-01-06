@@ -24,8 +24,10 @@ export class MineSweeperComponent implements OnInit {
   ngOnInit() {
     this.MineSweeperService.start()
 
-    this.botLoop(this.MineSweeperService.grid)
-    console.log('The game is over!')
+    this.botLoop()
+      .then(function() {
+        console.log('bot loop ended')
+      })
 
     // setInterval(() => {
     //   let move = this.BotService.getMove(this.MineSweeperService.grid)
@@ -33,14 +35,36 @@ export class MineSweeperComponent implements OnInit {
     // }, 5000);
   }
 
-  botLoop(grid: Cell[][]) {
-    this.BotService.getMovePromise(this.MineSweeperService.grid)
-      // .then((move) => move == null || this.botLoop(this.MineSweeperService.grid))
-      .then((move) => {
-        console.log(move)
-        debugger
-      })
+  async botLoop() {
+    try {
+      const move = await this.BotService.getMoveAsync(this.MineSweeperService.grid)
+      if(move == null) {
+        console.log('Bot Win')
+      }
+
+      if (this.MineSweeperService.dig(move)) {
+        let losingPhrase = this.losingPhrases[Math.floor(Math.random() * this.losingPhrases.length)]
+        console.error(losingPhrase)
+      } else {
+        this.botLoop()
+      }
+    }
+    catch (err) {
+      console.error(err)
+    }
   }
+
+  // botLoop(grid: Cell[][]) {
+  //   this.BotService.getMovePromise(this.MineSweeperService.grid)
+  //     // .then((move) => move == null || this.botLoop(this.MineSweeperService.grid))
+  //     .then((move) => {
+  //       if(this.MineSweeperService.dig(move)) {
+  //         let losingPhrase = this.losingPhrases[Math.floor(Math.random() * this.losingPhrases.length)]
+  //         console.error(losingPhrase)
+  //         reject
+  //       }
+  //     })
+  // }
 
   check(cell: Cell) {
     if (!cell.hidden || cell.mark) return
