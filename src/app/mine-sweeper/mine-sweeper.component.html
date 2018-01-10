@@ -1,5 +1,5 @@
 <div class="container">
-  <div *ngFor="let row of MineSweeperService.grid">
+  <div *ngFor="let row of grid">
     <span *ngFor="let cell of row"
       [class.mark]="cell.mark"
       [class.hidden]="cell.hidden"

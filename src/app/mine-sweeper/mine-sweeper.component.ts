@@ -14,6 +14,8 @@ export class MineSweeperComponent implements OnInit {
     private BotService: BotService
   ) { }
 
+  grid: Cell[][] = this.MineSweeperService.grid
+
   ngOnInit() {
     this.MineSweeperService.start()
 
