@@ -1,0 +1,8 @@
+<div class="container">
+  <div *ngFor="let row of grid">
+    <span *ngFor="let cell of row" [class.mark]="cell.mark" [class.hidden]="cell.hidden" [class.flashy]="cell.flashy && cell.hidden"
+      [class.inspected]="cell.flashy && !cell.hidden" (click)="check(cell)" (contextmenu)="mark($event, cell)">
+      {{!cell.flashy || !cell.hidden ? cell.score : cell.probability | percent}}
+    </span>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.container {
+  div {
+    display: flex;
+    span {
+      flex: 1 0 auto;
+      text-align: center;
+      padding: 1em 0;
+      margin: 0.1em;
+      user-select: none;
+    }
+  }
+}
+
+.hidden {
+  background-color: black;
+  cursor: pointer;
+}
+.mark {
+  background-color: #e94858;
+  color: #e94858;
+  cursor: not-allowed;
+}
+
+.flashy {
+  background-color: #f3a32a;
+}
+
+.inspected {
+  background-color: #3cb4cb;
+}

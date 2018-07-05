@@ -1,26 +1,15 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 
-
-import { AppComponent } from './app.component';
-import { MineSweeperComponent } from './mine-sweeper/mine-sweeper.component';
-
-import { MineSweeperService } from './mine-sweeper.service';
-import { BotService } from './bot.service';
-
+import { AppComponent } from "./app.component";
+import { GameComponent } from "./game/game.component";
+import { MineService } from "./mine.service";
+import { SweeperService } from "./sweeper.service";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MineSweeperComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  providers: [
-    BotService,
-    MineSweeperService
-  ],
+  declarations: [AppComponent, GameComponent],
+  imports: [BrowserModule],
+  providers: [MineService, SweeperService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
