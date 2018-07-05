@@ -18,16 +18,16 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.mineService.start();
 
-    // this.botLoop().then(result => {
-    //   switch (result) {
-    //     case "win":
-    //       alert("bot wins");
-    //       break;
-    //     case "lose":
-    //       alert("lose");
-    //       break;
-    //   }
-    // });
+    this.botLoop().then(result => {
+      switch (result) {
+        case "win":
+          alert("bot wins");
+          break;
+        case "lose":
+          alert("lose");
+          break;
+      }
+    });
   }
 
   check(cell: Cell) {
