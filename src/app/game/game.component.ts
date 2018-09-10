@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { MineService, Cell } from "../mine.service";
-import { SweeperService } from "../sweeper.service";
+import { Cell } from "./cell";
+import { Game } from "./game";
+import { Bot } from "./bot";
 
 @Component({
   selector: "ms-game",
@@ -8,36 +9,41 @@ import { SweeperService } from "../sweeper.service";
   styleUrls: ["./game.component.scss"]
 })
 export class GameComponent implements OnInit {
-  grid: Cell[][] = this.mineService.grid;
+  rows = 10;
+  columns = 10;
+  interval: any;
+  mines = 10;
+  mineSweeper = new Game(this.rows, this.columns, this.mines);
+  bot = new Bot();
 
-  constructor(
-    private mineService: MineService,
-    private sweeperService: SweeperService
-  ) {}
+  containerStyles = {
+    "grid-template-rows": `repeat(${this.rows}, 1fr)`,
+    "grid-template-columns": `repeat(${this.columns}, 1fr)`
+  };
+
+  constructor() {}
 
   ngOnInit() {
-    this.mineService.start();
-
     this.botLoop().then(result => {
-      switch (result) {
-        case "win":
-          alert("bot wins");
-          break;
-        case "lose":
-          alert("lose");
-          break;
-      }
+      console.log("game over");
     });
+  }
+
+  get grid() {
+    return this.mineSweeper.grid;
   }
 
   check(cell: Cell) {
     if (!cell.hidden || cell.mark) return;
 
-    if (this.mineService.dig(cell)) alert("lose");
+    if (this.mineSweeper.dig(cell)) {
+      alert("lose");
+      this.mineSweeper = new Game(this.rows, this.columns, this.mines);
+    }
   }
 
-  mark($event: Event, cell: Cell) {
-    $event.preventDefault();
+  mark(event: Event, cell: Cell) {
+    event.preventDefault();
 
     if (!cell.hidden) return;
 
@@ -46,13 +52,17 @@ export class GameComponent implements OnInit {
 
   async botLoop() {
     try {
-      const move = await this.sweeperService.getMoveAsync(
-        this.mineService.grid
-      );
+      const move = await this.bot.getMove(this.mineSweeper);
 
-      if (move == null) return "win";
+      if (move === null) {
+        alert("bot wins");
+        return "win";
+      }
 
-      if (this.mineService.dig(move)) return "lose";
+      if (this.mineSweeper.dig(move)) {
+        alert("lose");
+        return "lose";
+      }
 
       this.botLoop();
     } catch (err) {
