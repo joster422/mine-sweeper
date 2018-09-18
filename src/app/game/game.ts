@@ -15,22 +15,19 @@ export class Game {
       }
     }
 
-    // place all the mines
     for (let i = 0; i < this.mines; i++) {
       let cell = this.getSafeCell();
       cell.mine = true;
       this.getNeighbors(cell).forEach(neighbor => neighbor.score++);
     }
 
-    // dig here so that the user cannot lose on first dig
-    let cell = this.getSafeCell();
-    this.dig(cell);
+    this.dig(this.getSafeCell());
   }
 
-  // dig is check for mine
   dig(cell: Cell): boolean {
-    // todo remove
-    cell.hidden = false;
+    if (!cell.mine) {
+      cell.hidden = false;
+    }
 
     if (cell.score === 0) {
       this.getNeighbors(cell).forEach(

@@ -1,6 +1,6 @@
 <div class="container" [ngStyle]="containerStyles">
-  <div class="cell" *ngFor="let cell of mineSweeper.grid" (click)="check(cell)" (contextmenu)="mark($event, cell)" [class.mark]="cell.mark"
-    [class.hidden]="cell.hidden" [class.flashy]="cell.flashy && cell.hidden" [class.inspected]="cell.flashy && !cell.hidden">
+  <div class="cell" *ngFor="let cell of mineSweeper.grid" (click)="check(cell)" (contextmenu)="mark($event, cell)"
+    [class.mark]="cell.mark" [class.hidden]="cell.hidden" [class.flashy]="cell.flashy && cell.hidden" [class.inspected]="cell.flashy && !cell.hidden">
     <div *ngIf="!cell.flashy || !cell.hidden; else flashy">
       {{cell.score}}
     </div>

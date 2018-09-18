@@ -9,10 +9,9 @@ import { Bot } from "./bot";
   styleUrls: ["./game.component.scss"]
 })
 export class GameComponent implements OnInit {
-  rows = 10;
-  columns = 10;
-  interval: any;
-  mines = 10;
+  rows = 6;
+  columns = 6;
+  mines = 5;
   mineSweeper = new Game(this.rows, this.columns, this.mines);
   bot = new Bot();
 
@@ -24,49 +23,41 @@ export class GameComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.botLoop().then(result => {
-      console.log("game over");
-    });
+    this.botLoop();
   }
 
-  get grid() {
-    return this.mineSweeper.grid;
-  }
-
-  check(cell: Cell) {
-    if (!cell.hidden || cell.mark) return;
-
-    if (this.mineSweeper.dig(cell)) {
-      alert("lose");
-      this.mineSweeper = new Game(this.rows, this.columns, this.mines);
+  async botLoop(): Promise<any> {
+    if (await this.didBotWin()) {
+      console.log("bot won");
+    } else {
+      console.log("bot lost");
     }
+    this.mineSweeper = new Game(this.rows, this.columns, this.mines);
+    this.botLoop();
   }
 
-  mark(event: Event, cell: Cell) {
-    event.preventDefault();
-
-    if (!cell.hidden) return;
-
-    cell.mark = !cell.mark;
-  }
-
-  async botLoop() {
-    try {
-      const move = await this.bot.getMove(this.mineSweeper);
-
-      if (move === null) {
-        alert("bot wins");
-        return "win";
-      }
-
-      if (this.mineSweeper.dig(move)) {
-        alert("lose");
-        return "lose";
-      }
-
-      this.botLoop();
-    } catch (err) {
-      console.error(err);
+  async didBotWin(): Promise<boolean> {
+    const move = await this.bot.getMove(this.mineSweeper);
+    if (move === null) {
+      return true;
     }
+    return this.mineSweeper.dig(move) ? false : this.didBotWin();
   }
+
+  // user fns
+  // check(cell: Cell) {
+  //   if (!cell.hidden || cell.mark) return;
+
+  //   if (this.mineSweeper.dig(cell)) {
+  //     alert("lose");
+  //     this.mineSweeper = new Game(this.rows, this.columns, this.mines);
+  //   }
+  // }
+  // mark(event: Event, cell: Cell) {
+  //   event.preventDefault();
+
+  //   if (!cell.hidden) return;
+
+  //   cell.mark = !cell.mark;
+  // }
 }
