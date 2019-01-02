@@ -1,12 +1,14 @@
-.container {
-  display: grid;
+:host {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+  margin: 0.5em;
+  display: grid;
+  grid-gap: 0.5em;
 
-  .cell {
+  button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,6 +20,7 @@
   background-color: #000;
   cursor: pointer;
 }
+
 .mark {
   background-color: #e94858;
   color: #e94858;

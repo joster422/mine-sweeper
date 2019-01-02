@@ -1,4 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, HostBinding } from "@angular/core";
+import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
+
 import { Cell } from "./cell";
 import { Game } from "./game";
 import { Bot } from "./bot";
@@ -9,55 +11,45 @@ import { Bot } from "./bot";
   styleUrls: ["./game.component.scss"]
 })
 export class GameComponent implements OnInit {
+  @HostBinding("style.grid-template-rows") gridTemplateRows: SafeStyle;
+  @HostBinding("style.grid-template-columns") gridTemplateColumns: SafeStyle;
+
+  mines = 5;
   rows = 6;
   columns = 6;
-  mines = 5;
-  mineSweeper = new Game(this.rows, this.columns, this.mines);
-  bot = new Bot();
-
-  containerStyles = {
-    "grid-template-rows": `repeat(${this.rows}, 1fr)`,
-    "grid-template-columns": `repeat(${this.columns}, 1fr)`
-  };
-
-  constructor() {}
+  game = new Game(this.rows, this.columns, this.mines);
+  constructor(private domSanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.botLoop();
+    this.newGame();
   }
 
-  async botLoop(): Promise<any> {
-    if (await this.didBotWin()) {
-      console.log("bot won");
-    } else {
-      console.log("bot lost");
+  check(cell: Cell) {
+    if (!cell.hidden || cell.mark) return;
+
+    if (this.game.dig(cell)) {
+      alert("lose");
     }
-    this.mineSweeper = new Game(this.rows, this.columns, this.mines);
-    this.botLoop();
+  }
+  mark(event: Event, cell: Cell) {
+    event.preventDefault();
+
+    if (!cell.hidden) return;
+
+    cell.mark = !cell.mark;
   }
 
-  async didBotWin(): Promise<boolean> {
-    const move = await this.bot.getMove(this.mineSweeper);
-    if (move === null) {
-      return true;
-    }
-    return this.mineSweeper.dig(move) ? false : this.didBotWin();
+  private newGame() {
+    this.game = new Game(this.rows, this.columns, this.mines);
+    this.setHostGridStyles();
   }
 
-  // user fns
-  // check(cell: Cell) {
-  //   if (!cell.hidden || cell.mark) return;
-
-  //   if (this.mineSweeper.dig(cell)) {
-  //     alert("lose");
-  //     this.mineSweeper = new Game(this.rows, this.columns, this.mines);
-  //   }
-  // }
-  // mark(event: Event, cell: Cell) {
-  //   event.preventDefault();
-
-  //   if (!cell.hidden) return;
-
-  //   cell.mark = !cell.mark;
-  // }
+  private setHostGridStyles() {
+    this.gridTemplateRows = this.domSanitizer.bypassSecurityTrustStyle(
+      `repeat(${this.rows}, 1fr)`
+    );
+    this.gridTemplateColumns = this.domSanitizer.bypassSecurityTrustStyle(
+      `repeat(${this.columns}, 1fr)`
+    );
+  }
 }

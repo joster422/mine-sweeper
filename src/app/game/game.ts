@@ -51,7 +51,7 @@ export class Game {
     );
   }
 
-  private getSafeCell() {
+  private getSafeCell(): Cell {
     let x = Math.floor(Math.random() * this.rows);
     let y = Math.floor(Math.random() * this.columns);
     let cell = this.grid.find(cell => cell.x === x && cell.y === y);
