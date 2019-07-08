@@ -1,0 +1,30 @@
+button {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-color: lightgrey;
+    border-width: medium;
+    font-size: x-large;
+}
+
+.safe {
+    border: 0;
+}
+
+.hidden {
+    background: black;
+    color: black;
+    cursor: pointer;
+}
+
+.mark {
+    cursor: not-allowed;
+}
+
+.flashy {
+    background-color: #f3a32a;
+}
+
+.inspected {
+    background-color: #3cb4cb;
+}

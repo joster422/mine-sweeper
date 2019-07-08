@@ -1,16 +1,18 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgModule } from "@angular/core";
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 
-import { AppComponent } from "./app.component";
+import { FormControlModule } from '@joster/form-control';
 
-import { GameComponent } from "./game/game.component";
-import { MenuComponent } from "./menu/menu.component";
+import { AppComponent } from './app.component';
+import { GameComponent } from './game/game.component';
+import { CellComponent } from './game/cell/cell.component';
+import { FormComponent } from './game/form/form.component';
 
 @NgModule({
-  declarations: [AppComponent, GameComponent, MenuComponent],
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule],
+  declarations: [AppComponent, GameComponent, FormComponent, CellComponent],
+  imports: [BrowserModule, FormControlModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
