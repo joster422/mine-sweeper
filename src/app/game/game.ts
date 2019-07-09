@@ -1,7 +1,7 @@
 import { Cell } from "./cell/cell";
 
 const combination = (set: Cell[], n: number): Cell[][] => {
-  let i, j, combs, head, tailcombs;
+  let i, j, ret, tailCombinations;
 
   if (n > set.length || n <= 0) {
     return [];
@@ -12,32 +12,25 @@ const combination = (set: Cell[], n: number): Cell[][] => {
   }
 
   if (n === 1) {
-    combs = [];
+    ret = [];
     for (i = 0; i < set.length; i++) {
-      combs.push([set[i]]);
+      ret.push([set[i]]);
     }
-    return combs;
+    return ret;
   }
 
-  combs = [];
+  ret = [];
   for (i = 0; i < set.length - n + 1; i++) {
-    // head is a list that includes only our current element.
-    head = set.slice(i, i + 1);
-    // We take smaller combinations from the subsequent elements
-    tailcombs = combination(set.slice(i + 1), n - 1);
-    // For each (k-1)-combination we join it with the current
-    // and store it to the set of k-combinations.
-    for (j = 0; j < tailcombs.length; j++) {
-      combs.push(head.concat(tailcombs[j]));
+    tailCombinations = combination(set.slice(i + 1), n - 1);
+    for (j = 0; j < tailCombinations.length; j++) {
+      ret.push([...set.slice(i, i + 1), ...tailCombinations[j]]);
     }
   }
-  return combs;
+  return ret;
 }
 
 function combinations(set: Cell[]): Cell[][] {
   let ret: Cell[][] = [];
-
-  // Calculate all non-empty k-combinations
   for (let i = 2; i <= set.length - 1; i++) {
     ret = [...ret, ...combination(set, i)]
   }
@@ -172,5 +165,3 @@ export class Game {
     return this.grid.find(cell => cell.hidden && !cell.mark)!;
   }
 }
-
-// const markNeighbors = hiddenNeighbors.filter(cell => cell.mark)
