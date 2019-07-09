@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "gh-pages": "ng build --prod --base-href=https://joster422.github.io/mine-sweeper/ && git subtree push --prefix dist origin gh-pages"
   },
   "private": true,
   "dependencies": {

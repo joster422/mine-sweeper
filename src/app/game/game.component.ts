@@ -37,7 +37,7 @@ export class GameComponent {
     this.game.scan(cell).forEach(cell => cell.hidden && this.check(cell))
   }
 
-  private newGame() {
+  newGame() {
     this.newGameSubject.next();
     this.botSubscription && this.botSubscription.unsubscribe();
     this.game = new Game(this.form.rows, this.form.columns, this.form.mines);

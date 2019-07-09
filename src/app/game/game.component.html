@@ -3,4 +3,4 @@
   <ms-cell *ngFor="let cell of game.grid" [cell]="cell" [disabled]="form.isBotEnabled" (check)="check(cell)"
     (scan)="scan(cell)"></ms-cell>
 </div>
-<ms-form [model]="form" (changeBot)="changeBot()" (restart)="newGame()"></ms-form>
+<ms-form [model]="form" (restart)="newGame()"></ms-form>
