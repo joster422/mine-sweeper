@@ -1,0 +1,8 @@
+<button *ngIf="cell.hidden" type="button" class="hidden" [class.flashy]="cell.flashy" [class.mark]="cell.mark"
+  [disabled]="disabled" (click)="onCheck()" (contextmenu)="onMark($event)">
+  {{ cell.mark ? '🚩' : cell.flashy ? (cell.probability | percent) : ''}}
+</button>
+<button *ngIf="!cell.hidden" type="button" class="safe" [class.inspected]="cell.flashy" [disabled]="disabled"
+  (contextmenu)="onScan($event)" (dblclick)="onScan($event)">
+  {{ cell.score }}
+</button>

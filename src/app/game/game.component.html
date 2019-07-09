@@ -1,13 +1,6 @@
-<button
-  type="button"
-  *ngFor="let cell of game.grid"
-  (click)="check(cell)"
-  (contextmenu)="mark($event, cell)"
-  [class.mark]="cell.mark"
-  [class.hidden]="cell.hidden"
-  [class.flashy]="cell.flashy && cell.hidden"
-  [class.inspected]="cell.flashy && !cell.hidden"
->
-  <div *ngIf="!cell.flashy || !cell.hidden; else flashy">{{ cell.score }}</div>
-  <ng-template #flashy> {{ cell.probability | percent }} </ng-template>
-</button>
+<div *ngIf="game" id="game" [style.grid-template-rows]="gridTemplateRows"
+  [style.grid-template-columns]="gridTemplateColumns">
+  <ms-cell *ngFor="let cell of game.grid" [cell]="cell" [disabled]="form.isBotEnabled" (check)="check(cell)"
+    (scan)="scan(cell)"></ms-cell>
+</div>
+<ms-form [model]="form" (changeBot)="changeBot()" (restart)="newGame()"></ms-form>

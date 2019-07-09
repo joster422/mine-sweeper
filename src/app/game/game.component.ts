@@ -1,55 +1,66 @@
-import { Component, OnInit, HostBinding } from "@angular/core";
-import { DomSanitizer, SafeStyle } from "@angular/platform-browser";
+import { Component } from '@angular/core';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
-import { Cell } from "./cell";
-import { Game } from "./game";
-import { Bot } from "./bot";
+import { Cell } from './cell/cell';
+import { Form } from './form/form';
+import { Game } from './game';
+
+import { Subscription, from, Subject } from 'rxjs';
+import { defer } from 'q';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: "ms-game",
-  templateUrl: "./game.component.html",
-  styleUrls: ["./game.component.scss"]
+  selector: 'ms-game',
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.scss']
 })
-export class GameComponent implements OnInit {
-  @HostBinding("style.grid-template-rows") gridTemplateRows: SafeStyle;
-  @HostBinding("style.grid-template-columns") gridTemplateColumns: SafeStyle;
+export class GameComponent {
+  botSubscription?: Subscription;
+  form = new Form();
+  game!: Game;
+  gridTemplateRows?: SafeStyle;
+  gridTemplateColumns?: SafeStyle;
+  newGameSubject = new Subject();
 
-  mines = 5;
-  rows = 6;
-  columns = 6;
-  game = new Game(this.rows, this.columns, this.mines);
-  constructor(private domSanitizer: DomSanitizer) {}
-
-  ngOnInit() {
-    this.newGame();
-  }
+  constructor(private domSanitizer: DomSanitizer) { }
 
   check(cell: Cell) {
-    if (!cell.hidden || cell.mark) return;
-
-    if (this.game.dig(cell)) {
-      alert("lose");
-    }
+    const dugMine = this.game.dig(cell);
+    if (dugMine === false) return;
+    setTimeout(() => {
+      alert(`You ${dugMine === true ? 'lose' : 'win'}`);
+      this.newGame();
+    });
   }
-  mark(event: Event, cell: Cell) {
-    event.preventDefault();
 
-    if (!cell.hidden) return;
-
-    cell.mark = !cell.mark;
+  scan(cell: Cell) {
+    this.game.scan(cell).forEach(cell => cell.hidden && this.check(cell))
   }
 
   private newGame() {
-    this.game = new Game(this.rows, this.columns, this.mines);
-    this.setHostGridStyles();
-  }
-
-  private setHostGridStyles() {
+    this.newGameSubject.next();
+    this.botSubscription && this.botSubscription.unsubscribe();
+    this.game = new Game(this.form.rows, this.form.columns, this.form.mines);
     this.gridTemplateRows = this.domSanitizer.bypassSecurityTrustStyle(
-      `repeat(${this.rows}, 1fr)`
+      `repeat(${this.form.rows}, 1fr)`
     );
     this.gridTemplateColumns = this.domSanitizer.bypassSecurityTrustStyle(
-      `repeat(${this.columns}, 1fr)`
+      `repeat(${this.form.columns}, 1fr)`
     );
+    if (!this.form.isBotEnabled) return;
+    this.botSubscription = from(this.botPlay(this.game)).pipe(takeUntil(this.newGameSubject)).subscribe(didWin => {
+      setTimeout(() => {
+        alert(`Bot ${didWin ? 'win' : 'lose'}`);
+        this.newGame();
+      });
+    });
+  }
+
+  private async botPlay(game: Game): Promise<boolean> {
+    const cell = await game.getBotMove();
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    let dugMine = game.dig(cell);
+    if (dugMine === false) return this.botPlay(game);
+    return dugMine === undefined;
   }
 }
