@@ -6,7 +6,6 @@ import { Form } from './form/form';
 import { Game } from './game';
 
 import { Subscription, from, Subject } from 'rxjs';
-import { defer } from 'q';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -22,7 +21,9 @@ export class GameComponent {
   gridTemplateColumns?: SafeStyle;
   newGameSubject = new Subject();
 
-  constructor(private domSanitizer: DomSanitizer) { }
+  constructor(private domSanitizer: DomSanitizer) {
+    this.newGame();
+  }
 
   check(cell: Cell) {
     const dugMine = this.game.dig(cell);
