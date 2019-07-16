@@ -1,13 +1,13 @@
 {
   "name": "mine-sweeper",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "ghp-build": "ng build --prod --base-href=https://joster422.github.io/mine-sweeper/",
+    "ghp-deploy": "git subtree push --prefix dist origin gh-pages",
+    "gh-pages": "npm run ghp-build && npm run ghp-deploy"
   },
   "private": true,
   "dependencies": {
