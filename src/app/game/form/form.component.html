@@ -1,17 +1,20 @@
 <form #form="ngForm">
-  <fc-button (action)="restartSubject.next()">
-    🔄 Restart
+  <fc-button (action)="form.valid && restart$.next()">
+    Restart 🔄
   </fc-button>
-  <fc-small-number [(ngModel)]="model.rows" name="rows" [min]="2" [max]="20">
-    ↔️ Rows
+  <fc-small-number [(ngModel)]="model.rows" name="rows" (ngModelChange)="form.valid && restart$.next()" [min]="2"
+    [max]="20">
+    Rows ↔️
   </fc-small-number>
-  <fc-small-number [(ngModel)]="model.columns" name="columns" [min]="2" [max]="20">
-    ↕️ Columns
+  <fc-small-number [(ngModel)]="model.columns" name="columns" (ngModelChange)="form.valid && restart$.next()" [min]="2"
+    [max]="20">
+    Columns ↕️
   </fc-small-number>
-  <fc-small-number [(ngModel)]="model.mines" name="mines" [min]="0" [max]="100">
-    💣 Mines
+  <fc-small-number [(ngModel)]="model.mines" name="mines" (ngModelChange)="form.valid && restart$.next()" [min]="0"
+    [max]="100">
+    Mines 💣
   </fc-small-number>
-  <fc-toggle [(ngModel)]="model.isBotEnabled" name="isBotEnabled">
-    🤖 Bot Play
+  <fc-toggle [(ngModel)]="model.isBotEnabled" name="isBotEnabled" (ngModelChange)="form.valid && restart$.next()">
+    Bot Play 🤖
   </fc-toggle>
 </form>

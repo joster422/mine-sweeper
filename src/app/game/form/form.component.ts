@@ -1,13 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy
-} from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -20,26 +11,21 @@ import { Form } from './form';
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit, OnDestroy {
-  @ViewChild('form') form!: NgForm;
-
   @Input() model!: Form;
 
   @Output() restart = new EventEmitter();
 
-  restartSubject = new Subject();
+  restart$ = new Subject();
 
   constructor() { }
 
   ngOnInit() {
-    this.restartSubject
+    this.restart$
       .pipe(debounceTime(500))
       .subscribe(() => this.restart.emit());
-
-    this.form.valueChanges!
-      .subscribe(() => this.restartSubject.next());
   }
 
   ngOnDestroy() {
-    this.restartSubject.complete();
+    this.restart$.complete();
   }
 }
