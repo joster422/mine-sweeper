@@ -28,8 +28,8 @@
       [(ngModel)]="model.mines"
       name="mines"
       (ngModelChange)="form.valid && restart$.next()"
-      [min]="0"
-      [max]="100"
+      [min]="1"
+      [max]="model.rows * model.columns - 1"
     >
       Mines 💣
     </fc-small-number>
