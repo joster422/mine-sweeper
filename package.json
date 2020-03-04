@@ -3,8 +3,10 @@
   "version": "0.0.2",
   "scripts": {
     "ghp-build": "ng build --prod --base-href=https://joster422.github.io/mine-sweeper/",
-    "ghp-deploy": "git subtree push --prefix dist origin gh-pages",
-    "gh-pages": "npm run ghp-build && npm run ghp-deploy"
+    "ghp-commit": "git add . && git commit --message=\"chore - gh-pages deploy\" && git push",
+    "ghp-remove-old": "git push origin --delete gh-pages",
+    "ghp-subtree": "git subtree push --prefix dist origin gh-pages",
+    "gh-pages": "npm run ghp-build && npm run ghp-commit && npm run ghp-remove-old && npm run ghp-subtree"
   },
   "private": true,
   "dependencies": {
