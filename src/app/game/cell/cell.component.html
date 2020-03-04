@@ -2,6 +2,7 @@
   *ngIf="cell.hidden === true"
   type="button"
   class="hidden"
+  [class.accent]="(cell.x + cell.y) % 2 === 0"
   [class.mark]="cell.mark"
   [disabled]="isDisabled"
   (click)="onCheck()"

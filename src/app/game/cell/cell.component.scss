@@ -1,22 +1,25 @@
 button {
-    width: 100%;
-    height: 100%;
-    background: white;
-    border-color: lightgrey;
-    border-width: medium;
-    font-size: x-large;
-}
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-color: lightgrey;
+  border-width: medium;
+  font-size: x-large;
 
-.safe {
+  &.safe {
     border: 0;
-}
+  }
 
-.hidden {
-    background: black;
-    color: black;
+  &.hidden {
+    background: #000;
     cursor: pointer;
-}
 
-.mark {
+    &.accent {
+      background: #0a0a0a;
+    }
+  }
+
+  &.mark {
     cursor: not-allowed;
+  }
 }
