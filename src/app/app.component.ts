@@ -1,7 +1,7 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-  selector: "ms-root",
-  template: "<ms-game></ms-game>"
+  selector: 'ms-root',
+  template: '<ms-game></ms-game>'
 })
 export class AppComponent { }

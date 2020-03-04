@@ -10,8 +10,17 @@ import { CellComponent } from './game/cell/cell.component';
 import { FormComponent } from './game/form/form.component';
 
 @NgModule({
-  declarations: [AppComponent, GameComponent, FormComponent, CellComponent],
-  imports: [BrowserModule, FormControlModule, FormsModule],
+  declarations: [
+    AppComponent,
+    GameComponent,
+    FormComponent,
+    CellComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormControlModule,
+    FormsModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
