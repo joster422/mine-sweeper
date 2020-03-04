@@ -17,8 +17,6 @@ export class GameComponent {
   botSubscription?: Subscription;
   form = new Form();
   game!: Game;
-  gridTemplateRows?: SafeStyle;
-  gridTemplateColumns?: SafeStyle;
   newGameSubject = new Subject();
 
   constructor(private domSanitizer: DomSanitizer) {
@@ -40,14 +38,11 @@ export class GameComponent {
 
   newGame() {
     this.newGameSubject.next();
-    this.botSubscription && this.botSubscription.unsubscribe();
+
+    if (this.botSubscription !== undefined)
+      this.botSubscription.unsubscribe();
+
     this.game = new Game(this.form.rows, this.form.columns, this.form.mines);
-    this.gridTemplateRows = this.domSanitizer.bypassSecurityTrustStyle(
-      `repeat(${this.form.rows}, 1fr)`
-    );
-    this.gridTemplateColumns = this.domSanitizer.bypassSecurityTrustStyle(
-      `repeat(${this.form.columns}, 1fr)`
-    );
     if (!this.form.isBotEnabled) return;
     this.botSubscription = from(this.botPlay(this.game)).pipe(takeUntil(this.newGameSubject)).subscribe(didWin => {
       setTimeout(() => {

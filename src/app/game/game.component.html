@@ -1,6 +1,23 @@
-<div *ngIf="game" id="game" [style.grid-template-rows]="gridTemplateRows"
-  [style.grid-template-columns]="gridTemplateColumns">
-  <ms-cell *ngFor="let cell of game.grid" [cell]="cell" [disabled]="form.isBotEnabled" (check)="check(cell)"
-    (scan)="scan(cell)"></ms-cell>
+<section>
+
+</section>
+<div
+  *ngIf="game"
+  id="game"
+>
+  <ms-cell
+    *ngFor="let cell of game.grid"
+    [cell]="cell"
+    [isDisabled]="form.isBotEnabled"
+    [style.grid-column]="cell.x + 1"
+    [style.grid-row]="cell.y + 1"
+    (check)="check(cell)"
+    (scan)="scan(cell)"
+  ></ms-cell>
 </div>
-<ms-form [model]="form" (restart)="newGame()"></ms-form>
+<footer>
+  <ms-form
+    [model]="form"
+    (restart)="newGame()"
+  ></ms-form>
+</footer>

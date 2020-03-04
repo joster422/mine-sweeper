@@ -5,5 +5,8 @@ export class Cell {
   mark = false;
   probability = 0;
 
-  constructor(public x: number, public y: number) { }
+  constructor(
+    public readonly x: number,
+    public readonly y: number
+  ) { }
 }

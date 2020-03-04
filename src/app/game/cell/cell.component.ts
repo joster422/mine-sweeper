@@ -2,13 +2,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Cell } from './cell';
 
 @Component({
-  selector: 'ms-cell',
+  selector: 'ms-cell[cell]',
   templateUrl: './cell.component.html',
   styleUrls: ['./cell.component.scss']
 })
 export class CellComponent {
   @Input() cell!: Cell;
-  @Input() disabled = false;
+  @Input() isDisabled = false;
 
   @Output() check = new EventEmitter();
   @Output() scan = new EventEmitter();

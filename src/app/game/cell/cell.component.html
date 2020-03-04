@@ -1,8 +1,21 @@
-<button *ngIf="cell.hidden" type="button" class="hidden" [class.mark]="cell.mark" [disabled]="disabled"
-  (click)="onCheck()" (contextmenu)="onMark($event)">
-  {{ cell.mark && '🚩' }}
+<button
+  *ngIf="cell.hidden === true"
+  type="button"
+  class="hidden"
+  [class.mark]="cell.mark"
+  [disabled]="isDisabled"
+  (click)="onCheck()"
+  (contextmenu)="onMark($event)"
+>
+  {{ cell.mark ? '🚩' : '' }}
 </button>
-<button *ngIf="!cell.hidden" type="button" class="safe" [disabled]="disabled" (contextmenu)="onScan($event)"
-  (dblclick)="onScan($event)">
+<button
+  *ngIf="cell.hidden === false"
+  type="button"
+  class="safe"
+  [disabled]="isDisabled"
+  (contextmenu)="onScan($event)"
+  (dblclick)="onScan($event)"
+>
   {{ cell.score }}
 </button>
