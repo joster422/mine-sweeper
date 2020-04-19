@@ -1,44 +1,45 @@
 <form #form="ngForm">
+  <div>
+    <fc-button (action)="form.valid && restart$.next()">
+      Restart 🔄
+    </fc-button>
+  </div>
+  <br />
   <fieldset>
     <legend title="Settings">
       Settings ⚙️
     </legend>
-    <fc-button (action)="form.valid && restart$.next()">
-      Restart 🔄
-    </fc-button>
-    <fc-small-number
-      [(ngModel)]="model.rows"
-      name="rows"
-      (ngModelChange)="form.valid && restart$.next()"
-      [min]="2"
-      [max]="20"
-    >
-      Rows ↔️
-    </fc-small-number>
-    <fc-small-number
-      [(ngModel)]="model.columns"
-      name="columns"
-      (ngModelChange)="form.valid && restart$.next()"
-      [min]="2"
-      [max]="20"
-    >
-      Columns ↕️
-    </fc-small-number>
-    <fc-small-number
-      [(ngModel)]="model.mines"
-      name="mines"
-      (ngModelChange)="form.valid && restart$.next()"
-      [min]="1"
-      [max]="model.rows * model.columns - 1"
-    >
-      Mines 💣
-    </fc-small-number>
-    <fc-toggle
-      [(ngModel)]="model.isBotEnabled"
-      name="isBotEnabled"
-      (ngModelChange)="form.valid && restart$.next()"
-    >
-      Bot Play 🤖
-    </fc-toggle>
+    <div>
+      <fc-integer
+        [(ngModel)]="model.rows"
+        label="Rows ↔️"
+        name="rows"
+        (ngModelChange)="form.valid && restart$.next()"
+        [min]="2"
+        [max]="20"
+      ></fc-integer>
+      <fc-integer
+        [(ngModel)]="model.columns"
+        label="Columns ↕️"
+        name="columns"
+        (ngModelChange)="form.valid && restart$.next()"
+        [min]="2"
+        [max]="20"
+      ></fc-integer>
+      <fc-integer
+        [(ngModel)]="model.mines"
+        label="Mines 💣"
+        name="mines"
+        (ngModelChange)="form.valid && restart$.next()"
+        [min]="1"
+        [max]="model.rows * model.columns - 1"
+      ></fc-integer>
+      <fc-toggle
+        [(ngModel)]="model.isBotEnabled"
+        label="Bot Play 👻"
+        name="isBotEnabled"
+        (ngModelChange)="form.valid && restart$.next()"
+      ></fc-toggle>
+    </div>
   </fieldset>
 </form>
