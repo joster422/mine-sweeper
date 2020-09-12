@@ -1,14 +1,9 @@
 {
   "name": "mine-sweeper",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "scripts": {
-    "ghp-build": "ng build --prod --base-href=https://joster422.github.io/mine-sweeper/",
-    "ghp-commit": "git add . && git commit --message=\"chore - gh-pages deploy\" && git push",
-    "ghp-remove-old": "git push origin --delete gh-pages",
-    "ghp-subtree": "git subtree push --prefix dist origin gh-pages",
-    "gh-pages": "npm run ghp-build && npm run ghp-commit && npm run ghp-remove-old && npm run ghp-subtree"
+    "pages": "ng build --prod --base-href=https://joster422.github.io/mine-sweeper/"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.2",
     "@angular/common": "~9.1.2",
@@ -18,7 +13,6 @@
     "@angular/platform-browser": "~9.1.2",
     "@angular/platform-browser-dynamic": "~9.1.2",
     "@angular/router": "~9.1.2",
-    "@joster/form-control": "0.0.3",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.3"
