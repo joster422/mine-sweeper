@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 import { Cell } from './cell/cell';
 import { Form } from './form/form';
@@ -19,21 +18,22 @@ export class GameComponent {
   game!: Game;
   newGameSubject = new Subject();
 
-  constructor(private domSanitizer: DomSanitizer) {
+  constructor() {
     this.newGame();
   }
 
   check(cell: Cell) {
     const dugMine = this.game.dig(cell);
-    if (dugMine === false) return;
+    if (dugMine === false)
+      return;
     setTimeout(() => {
       alert(`You ${dugMine === true ? 'lose' : 'win'}`);
       this.newGame();
-    });
+    }, 1000);
   }
 
   scan(cell: Cell) {
-    this.game.scan(cell).forEach(cell => cell.hidden && this.check(cell))
+    this.game.scan(cell).forEach(item => item.hidden && this.check(item));
   }
 
   newGame() {
@@ -58,7 +58,7 @@ export class GameComponent {
   private async botPlay(game: Game): Promise<boolean> {
     const cell = await game.getBotMove();
     await new Promise(resolve => setTimeout(resolve, 1000));
-    let dugMine = game.dig(cell);
+    const dugMine = game.dig(cell);
     if (dugMine === false) return this.botPlay(game);
     return dugMine === undefined;
   }
