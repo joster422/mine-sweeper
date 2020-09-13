@@ -42,6 +42,9 @@ export class GameComponent {
     if (this.botSubscription !== undefined)
       this.botSubscription.unsubscribe();
 
+    if (this.form.mines >= this.form.rows * this.form.columns - 1)
+      throw new Error('invalid form');
+
     this.game = new Game(this.form.rows, this.form.columns, this.form.mines);
     if (!this.form.isBotEnabled) return;
     this.botSubscription = from(this.botPlay(this.game)).pipe(takeUntil(this.newGameSubject)).subscribe(didWin => {
