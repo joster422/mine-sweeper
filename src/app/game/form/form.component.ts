@@ -16,6 +16,10 @@ export class FormComponent implements OnInit, OnDestroy {
   @Output() restart = new EventEmitter();
 
   restart$ = new Subject();
+  booleans = [
+    { key: true, value: 'Yes' },
+    { key: false, value: 'No' }
+  ];
 
   constructor() { }
 
