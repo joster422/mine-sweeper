@@ -1,46 +1,76 @@
 <form #form="ngForm">
   <div>
     <fc-button (clicked)="form.valid && restart$.next()">
-      Restart 🔄
+      Restart&nbsp;<icon
+        size="1em"
+        type="refresh"
+        [fill]="['E50B00', 'FFFFFF']"
+      ></icon>
     </fc-button>
   </div>
   <br />
   <fieldset>
     <legend title="Settings">
-      Settings ⚙️
+      <icon
+        size="1em"
+        type="gear"
+        [fill]="['E50B00', 'FFFFFF']"
+      ></icon> Settings
     </legend>
     <div>
       <fc-number
         [(ngModel)]="model.rows"
         (ngModelChange)="form.valid && restart$.next()"
-        label="Rows ↔️"
         name="rows"
         [min]="2"
         [max]="20"
-      ></fc-number>
+      >
+        <icon
+          size="1em"
+          type="row"
+          [fill]="['E50B00', 'FFFFFF']"
+        ></icon> Rows
+      </fc-number>
       <fc-number
         [(ngModel)]="model.columns"
         (ngModelChange)="form.valid && restart$.next()"
-        label="Columns ↕️"
         name="columns"
         [min]="2"
         [max]="20"
-      ></fc-number>
+      >
+        <icon
+          size="1em"
+          type="column"
+          [fill]="['E50B00', 'FFFFFF']"
+          fillRotate
+        ></icon> Columns
+      </fc-number>
       <fc-number
         [(ngModel)]="model.mines"
         (ngModelChange)="form.valid && restart$.next()"
-        label="Mines 💣"
         name="mines"
         [min]="1"
         [max]="model.rows * model.columns - 1"
-      ></fc-number>
+      >
+        <icon
+          size="1em"
+          type="bomb"
+          [fill]="['E50B00', 'FFFFFF']"
+        ></icon> Mines
+      </fc-number>
       <fc-choice
         [(ngModel)]="model.isBotEnabled"
         (ngModelChange)="form.valid && restart$.next()"
-        label="Bot Play 👻"
         name="isBotEnabled"
         [items]="booleans"
-      ></fc-choice>
+      >
+        <icon
+          size="1em"
+          type="user"
+          [fill]="['E50B00', 'FFFFFF']"
+          fillRotate
+        ></icon> Let me play
+      </fc-choice>
     </div>
   </fieldset>
 </form>

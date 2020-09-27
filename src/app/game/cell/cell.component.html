@@ -8,7 +8,12 @@
   (click)="onCheck()"
   (contextmenu)="onMark($event)"
 >
-  {{ cell.mark ? '🚩' : '' }}
+  <icon
+    *ngIf="cell.mark"
+    size="1em"
+    type="flag"
+    [fill]="['E50B00', 'FFFFFF']"
+  ></icon>
 </button>
 <button
   *ngIf="cell.hidden === false"

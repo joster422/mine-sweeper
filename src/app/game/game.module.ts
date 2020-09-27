@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { IconModule } from '@joster-dev/icon';
+
 import { CellComponent } from './cell/cell.component';
 import { GameComponent } from './game.component';
 import { FormModule } from './form/form.module';
@@ -12,7 +14,8 @@ import { FormModule } from './form/form.module';
   ],
   imports: [
     CommonModule,
-    FormModule
+    FormModule,
+    IconModule
   ],
   exports: [
     GameComponent

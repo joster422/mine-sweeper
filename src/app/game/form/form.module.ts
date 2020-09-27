@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { FormControlModule } from '@joster-dev/form-control';
+import { IconModule } from '@joster-dev/icon';
 
 import { FormComponent } from './form.component';
 
@@ -14,7 +15,8 @@ import { FormComponent } from './form.component';
   imports: [
     CommonModule,
     FormControlModule,
-    FormsModule
+    FormsModule,
+    IconModule
   ],
   exports: [
     FormComponent
