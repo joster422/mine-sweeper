@@ -1,6 +1,7 @@
 export class Form {
-  rows = 10;
-  columns = 10;
-  mines = (this.rows * this.columns) / 5;
+  rows: number | null = 10;
+  columns: number | null = 10;
+  mines: number | null = 100 / 5;
   isBotEnabled = false;
+  botSpeed: 1 | 2 | 3 = 2;
 }

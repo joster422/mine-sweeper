@@ -1,10 +1,10 @@
 <form #form="ngForm">
   <div>
     <fc-button (clicked)="form.valid && restart$.next()">
-      Restart&nbsp;<icon
+      Restart&nbsp;&nbsp;<icon
         size="1em"
         type="refresh"
-        [fill]="['E50B00', 'FFFFFF']"
+        [fill]="['247000', '000000']"
       ></icon>
     </fc-button>
   </div>
@@ -14,62 +14,96 @@
       <icon
         size="1em"
         type="gear"
-        [fill]="['E50B00', 'FFFFFF']"
+        [fill]="['247000', '000000']"
       ></icon> Settings
     </legend>
-    <div>
-      <fc-number
-        [(ngModel)]="model.rows"
-        (ngModelChange)="form.valid && restart$.next()"
-        name="rows"
-        [min]="2"
-        [max]="20"
-      >
-        <icon
-          size="1em"
-          type="row"
-          [fill]="['E50B00', 'FFFFFF']"
-        ></icon> Rows
-      </fc-number>
-      <fc-number
-        [(ngModel)]="model.columns"
-        (ngModelChange)="form.valid && restart$.next()"
-        name="columns"
-        [min]="2"
-        [max]="20"
-      >
-        <icon
-          size="1em"
-          type="column"
-          [fill]="['E50B00', 'FFFFFF']"
-          fillRotate
-        ></icon> Columns
-      </fc-number>
-      <fc-number
-        [(ngModel)]="model.mines"
-        (ngModelChange)="form.valid && restart$.next()"
-        name="mines"
-        [min]="1"
-        [max]="model.rows * model.columns - 1"
-      >
-        <icon
-          size="1em"
-          type="bomb"
-          [fill]="['E50B00', 'FFFFFF']"
-        ></icon> Mines
-      </fc-number>
+    <div id="settings">
+      <div>
+        {{percentMines}}% mines
+      </div>
+      <div>
+        <label>
+          Difficulty
+        </label>
+        <div>
+          <fc-button (clicked)="clickDifficulty(1)">
+            Easy
+          </fc-button>
+          <fc-button (clicked)="clickDifficulty(2)">
+            Medium
+          </fc-button>
+          <fc-button (clicked)="clickDifficulty(3)">
+            Hard
+          </fc-button>
+        </div>
+      </div>
+      <div>
+        <fc-number
+          [(ngModel)]="model.rows"
+          (ngModelChange)="form.valid && restart$.next()"
+          name="rows"
+          [min]="minRows"
+          [max]="maxRows"
+        >
+          Rows <icon
+            size="1em"
+            type="row"
+            [fill]="['247000', '000000']"
+          ></icon>
+        </fc-number>
+        <fc-number
+          [(ngModel)]="model.columns"
+          (ngModelChange)="form.valid && restart$.next()"
+          name="columns"
+          [min]="minColumns"
+          [max]="maxColumns"
+        >
+          Columns <icon
+            size="1em"
+            type="column"
+            [fill]="['247000', '000000']"
+            fillRotate
+          ></icon>
+        </fc-number>
+        <fc-number
+          [(ngModel)]="model.mines"
+          (ngModelChange)="form.valid && restart$.next()"
+          name="mines"
+          [min]="1"
+          [max]="maxMines"
+        >
+          Mines <icon
+            size="1em"
+            type="bomb"
+            [fill]="['247000', '000000']"
+          ></icon>
+        </fc-number>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend title="Ghost Settings">
+      <icon
+        size="1em"
+        type="user"
+        [fill]="['247000', '000000']"
+      ></icon> Ghost Settings
+    </legend>
+    <div id="ghost-settings">
       <fc-choice
         [(ngModel)]="model.isBotEnabled"
         (ngModelChange)="form.valid && restart$.next()"
         name="isBotEnabled"
         [items]="booleans"
       >
-        <icon
-          size="1em"
-          type="user"
-          [fill]="['E50B00', 'FFFFFF']"
-          fillRotate
-        ></icon> Let me play
+        Let me play
+      </fc-choice>
+      <fc-choice
+        [(ngModel)]="model.botSpeed"
+        name="botSpeed"
+        [items]="botSpeeds"
+      >
+        Speed
       </fc-choice>
     </div>
   </fieldset>

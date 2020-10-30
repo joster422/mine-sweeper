@@ -1,21 +1,54 @@
 form {
   margin: auto;
-  padding: 1em;
+  padding: 2em 1em;
   max-width: 500px;
+
+  > * {
+    margin-bottom: 1em;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 
   > div {
     text-align: center;
+    > fc-button {
+      display: inline-block;
+    }
   }
 
   fieldset {
-    border: 1px solid black;
     padding: 1em;
+    border: 1px solid lightgrey;
+    border-radius: 0.5em;
     box-shadow: 0.2em 0.2em 0.2em 0 lightgrey;
+  }
+}
 
-    > div {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 1em;
+#settings {
+  > :first-child {
+    text-align: right;
+    margin-bottom: 0.2em;
+  }
+  > :nth-child(2) {
+    margin-bottom: 1em;
+    > div > fc-button {
+      display: inline-block;
+      &:not(:last-child) {
+        margin-right: 0.5em;
+      }
     }
+  }
+  > :last-child {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+  }
+}
+
+#ghost-settings {
+  > :first-child {
+    margin-bottom: 1em;
   }
 }

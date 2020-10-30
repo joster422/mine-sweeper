@@ -6,6 +6,7 @@ import { Game } from './game';
 
 import { Subscription, from, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ValidatedForm } from './form/validated-form';
 
 @Component({
   selector: 'ms-game',
@@ -42,10 +43,12 @@ export class GameComponent {
     if (this.botSubscription !== undefined)
       this.botSubscription.unsubscribe();
 
-    if (this.form.mines >= this.form.rows * this.form.columns - 1)
+    const form = this.form as ValidatedForm;
+
+    if (form.mines >= form.rows * form.columns - 1)
       throw new Error('invalid form');
 
-    this.game = new Game(this.form.rows, this.form.columns, this.form.mines);
+    this.game = new Game(form.rows, form.columns, form.mines);
     if (!this.form.isBotEnabled) return;
     this.botSubscription = from(this.botPlay(this.game)).pipe(takeUntil(this.newGameSubject)).subscribe(didWin => {
       setTimeout(() => {
