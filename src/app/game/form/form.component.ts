@@ -44,12 +44,11 @@ export class FormComponent implements OnInit, OnDestroy {
     this.model.mines = 5;
   }
 
-  get percentMines(): string {
-    if (!this.model.columns || !this.model.rows || !this.model.mines)
-      return '0';
-    return (this.model.mines / (this.model.rows * this.model.columns) * 100).toFixed(0);
-  }
-
+  // get percentMines(): string {
+  //   if (!this.model.columns || !this.model.rows || !this.model.mines)
+  //     return '0';
+  //   return (this.model.mines / (this.model.rows * this.model.columns) * 100).toFixed(0);
+  // }
 
   get minRows(): number {
     return 2;

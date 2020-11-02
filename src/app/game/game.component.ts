@@ -7,6 +7,7 @@ import { Game } from './game';
 import { Subscription, from, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ValidatedForm } from './form/validated-form';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'ms-game',
@@ -19,8 +20,15 @@ export class GameComponent {
   game!: Game;
   newGameSubject = new Subject();
 
-  constructor() {
+  constructor(private domSanitizer: DomSanitizer) {
     this.newGame();
+  }
+
+  get gridAutoSize(): SafeStyle {
+    const width = 'calc(100vw - 1em)';
+    const height = '100vh';
+    const ret = `min(${width} / ${this.game.rows}, ${height} / ${this.game.columns})`;
+    return this.domSanitizer.bypassSecurityTrustStyle(`max(${ret}, 2em)`);
   }
 
   check(cell: Cell) {

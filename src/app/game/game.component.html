@@ -1,7 +1,7 @@
 <div
   id="game"
-  [style.grid-auto-rows]="'min(calc(100vw - 1em) /' + game.rows + ', 100vh /' + game.columns"
-  [style.grid-auto-columns]="'min(calc(100vw - 1em) /' + game.rows + ', 100vh /' + game.columns"
+  [style.grid-auto-rows]="gridAutoSize"
+  [style.grid-auto-columns]="gridAutoSize"
 >
   <ms-cell
     *ngFor="let cell of game.grid"
