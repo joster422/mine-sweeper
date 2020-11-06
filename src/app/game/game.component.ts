@@ -25,14 +25,14 @@ export class GameComponent {
   }
 
   get gridAutoSize(): SafeStyle {
-    const width = 'calc(100vw - 1em)';
+    const width = '100vw';
     const height = '100vh';
     const ret = `min(${width} / ${this.game.rows}, ${height} / ${this.game.columns})`;
     return this.domSanitizer.bypassSecurityTrustStyle(`max(${ret}, 2em)`);
   }
 
-  check(cell: Cell) {
-    const dugMine = this.game.dig(cell);
+  async check(cell: Cell) {
+    const dugMine = await this.game.dig(cell);
     if (dugMine === false)
       return;
     setTimeout(() => {
@@ -41,8 +41,9 @@ export class GameComponent {
     }, 1000);
   }
 
-  scan(cell: Cell) {
-    this.game.scan(cell).forEach(item => item.hidden && this.check(item));
+  async scan(cell: Cell) {
+    const cells = await this.game.scan(cell);
+    cells.forEach(item => item.hidden && this.check(item));
   }
 
   newGame() {
@@ -56,7 +57,7 @@ export class GameComponent {
     if (form.mines >= form.rows * form.columns - 1)
       throw new Error('invalid form');
 
-    this.game = new Game(form.rows, form.columns, form.mines);
+    this.game = new Game(undefined, form.rows, form.columns, form.mines);
     if (!this.form.isBotEnabled) return;
     this.botSubscription = from(this.botPlay(this.game)).pipe(takeUntil(this.newGameSubject)).subscribe(didWin => {
       setTimeout(() => {
@@ -66,10 +67,22 @@ export class GameComponent {
     });
   }
 
+  // get percentStillHidden(): string {
+  //   const hidden = this.game.grid.filter(cell => cell.hidden);
+  //   return this.game.grid.filter(cell => cell.hidden).length
+  // }
+
+  get percentMines(): string {
+    if (!this.form.columns || !this.form.rows || !this.form.mines)
+      return '0';
+    return (this.form.mines / (this.form.rows * this.form.columns) * 100).toFixed(0);
+  }
+
+
   private async botPlay(game: Game): Promise<boolean> {
     const cell = await game.getBotMove();
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const dugMine = game.dig(cell);
+    const dugMine = await game.dig(cell);
     if (dugMine === false) return this.botPlay(game);
     return dugMine === undefined;
   }

@@ -39,16 +39,25 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   clickDifficulty(value: 1 | 2 | 3): void {
-    this.model.rows = 5;
-    this.model.columns = 5;
-    this.model.mines = 5;
+    switch (value) {
+      case 1:
+        this.model.rows = 10;
+        this.model.columns = 10;
+        this.model.mines = 15;
+        break;
+      case 2:
+        this.model.rows = 15;
+        this.model.columns = 15;
+        this.model.mines = 30;
+        break;
+      case 3:
+        this.model.rows = 64;
+        this.model.columns = 42;
+        this.model.mines = 300;
+        break;
+    }
+    this.restart$.next();
   }
-
-  // get percentMines(): string {
-  //   if (!this.model.columns || !this.model.rows || !this.model.mines)
-  //     return '0';
-  //   return (this.model.mines / (this.model.rows * this.model.columns) * 100).toFixed(0);
-  // }
 
   get minRows(): number {
     return 2;

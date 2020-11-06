@@ -1,19 +1,29 @@
-<div
-  id="game"
-  [style.grid-auto-rows]="gridAutoSize"
-  [style.grid-auto-columns]="gridAutoSize"
->
-  <ms-cell
-    *ngFor="let cell of game.grid"
-    [cell]="cell"
-    [isDisabled]="form.isBotEnabled"
-    [style.grid-column]="cell.x + 1"
-    [style.grid-row]="cell.y + 1"
-    (check)="check(cell)"
-    (scan)="scan(cell)"
-  ></ms-cell>
+<div id="overflow">
+  <div
+    id="game"
+    [style.grid-auto-rows]="gridAutoSize"
+    [style.grid-auto-columns]="gridAutoSize"
+  >
+    <ms-cell
+      *ngFor="let cell of game.grid"
+      [cell]="cell"
+      [isDisabled]="form.isBotEnabled"
+      [style.grid-column]="cell.x + 1"
+      [style.grid-row]="cell.y + 1"
+      (check)="check(cell)"
+      (scan)="scan(cell)"
+    ></ms-cell>
+  </div>
 </div>
 <footer>
+  <div class="space-between">
+    <!-- <small>
+      {{percentStillHidden}}% progress
+    </small> -->
+    <small>
+      {{percentMines}}% danger
+    </small>
+  </div>
   <ms-form
     [model]="form"
     (restart)="newGame()"

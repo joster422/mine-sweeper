@@ -23,4 +23,8 @@ button {
   &.mark {
     cursor: not-allowed;
   }
+
+  > icon {
+    display: block !important;
+  }
 }

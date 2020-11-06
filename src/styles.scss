@@ -3,18 +3,6 @@ body {
   margin: 0;
 
   &::-webkit-scrollbar {
-    width: 1em;
-  }
-  &::-webkit-scrollbar-track {
-    background: white;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: white;
-    border: 0.25em solid lightgrey;
-    &:active,
-    &:hover {
-      border: 0.25em solid black;
-      box-shadow: 0 0 1em black;
-    }
+    width: 0;
   }
 }
