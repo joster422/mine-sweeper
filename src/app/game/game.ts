@@ -39,11 +39,11 @@ export class Game {
   async dig(cell: Cell): Promise<boolean | undefined> {
     if (!cell.hidden)
       throw new Error('only dig hidden cell');
+    cell.hidden = false;
     if (cell.mine)
       return true;
-    cell.hidden = false;
     if (cell.score === 0) {
-      const neighbors = await this.getNeighbors(cell);
+      const neighbors = this.getNeighbors(cell);
       neighbors.forEach(neighbor => neighbor.hidden && this.dig(neighbor));
     }
     if (this.grid.filter(item => item.hidden).length === this.mines)

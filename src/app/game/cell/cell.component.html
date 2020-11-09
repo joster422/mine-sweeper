@@ -13,6 +13,7 @@
     type="flag"
     [fill]="['E50B00', 'FFFFFF']"
   ></icon>
+
 </button>
 <button
   *ngIf="cell.hidden === false"
@@ -22,5 +23,12 @@
   (contextmenu)="onScan($event)"
   (dblclick)="onScan($event)"
 >
-  {{ cell.score }}
+  <icon
+    *ngIf="cell.mine"
+    type="bomb"
+    [fill]="['E50B00', 'FFFFFF']"
+  ></icon>
+  <span *ngIf="!cell.mine">
+    {{ cell.score }}
+  </span>
 </button>

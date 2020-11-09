@@ -12,6 +12,7 @@ import { Form } from './form';
 })
 export class FormComponent implements OnInit, OnDestroy {
   @Input() model!: Form;
+  @Input() disabled = false;
 
   @Output() restart = new EventEmitter();
 
@@ -51,9 +52,9 @@ export class FormComponent implements OnInit, OnDestroy {
         this.model.mines = 30;
         break;
       case 3:
-        this.model.rows = 64;
-        this.model.columns = 42;
-        this.model.mines = 300;
+        this.model.rows = 54;
+        this.model.columns = 36;
+        this.model.mines = 200;
         break;
     }
     this.restart$.next();

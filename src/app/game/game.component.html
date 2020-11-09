@@ -17,15 +17,16 @@
 </div>
 <footer>
   <div class="space-between">
-    <!-- <small>
+    <small>
       {{percentStillHidden}}% progress
-    </small> -->
+    </small>
     <small>
       {{percentMines}}% danger
     </small>
   </div>
   <ms-form
     [model]="form"
+    [disabled]="!allowClicks"
     (restart)="newGame()"
   ></ms-form>
 </footer>

@@ -19,6 +19,7 @@ export class GameComponent {
   form = new Form();
   game!: Game;
   newGameSubject = new Subject();
+  allowClicks = true;
 
   constructor(private domSanitizer: DomSanitizer) {
     this.newGame();
@@ -32,13 +33,16 @@ export class GameComponent {
   }
 
   async check(cell: Cell) {
+    if (!this.allowClicks) return;
+
     const dugMine = await this.game.dig(cell);
     if (dugMine === false)
       return;
-    setTimeout(() => {
-      alert(`You ${dugMine === true ? 'lose' : 'win'}`);
-      this.newGame();
-    }, 1000);
+
+    this.allowClicks = false;
+    await new Promise(r => setTimeout(() => r(), dugMine === true ? 5000 : 3000));
+    this.newGame();
+    this.allowClicks = true;
   }
 
   async scan(cell: Cell) {
@@ -67,10 +71,12 @@ export class GameComponent {
     });
   }
 
-  // get percentStillHidden(): string {
-  //   const hidden = this.game.grid.filter(cell => cell.hidden);
-  //   return this.game.grid.filter(cell => cell.hidden).length
-  // }
+  get percentStillHidden(): string {
+    if (!this.form.columns || !this.form.rows || !this.form.mines)
+      return '0';
+    const hidden = this.game.grid.filter(cell => cell.hidden);
+    return (100 - ((hidden.length - this.form.mines) / (this.form.rows * this.form.columns - this.form.mines) * 100)).toFixed(0);
+  }
 
   get percentMines(): string {
     if (!this.form.columns || !this.form.rows || !this.form.mines)
