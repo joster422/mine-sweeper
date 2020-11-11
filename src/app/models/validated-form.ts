@@ -3,4 +3,5 @@ export interface ValidatedForm {
   columns: number;
   mines: number;
   isBotEnabled: boolean;
+  botSpeed: 1 | 2 | 3;
 }

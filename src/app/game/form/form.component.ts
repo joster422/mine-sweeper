@@ -1,12 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Form } from 'src/app/models';
 
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { Form } from './form';
-
 @Component({
-  selector: 'ms-form',
+  selector: 'ms-form[model]',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })

@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Cell } from './cell';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Cell } from 'src/app/models';
 
 @Component({
   selector: 'ms-cell[cell]',

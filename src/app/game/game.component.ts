@@ -1,13 +1,8 @@
-import { Component } from '@angular/core';
-
-import { Cell } from './cell/cell';
-import { Form } from './form/form';
-import { Game } from './game';
-
-import { Subscription, from, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ValidatedForm } from './form/validated-form';
+import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { from, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Cell, Form, Game, ValidatedForm } from '../models';
 
 @Component({
   selector: 'ms-game',
@@ -15,6 +10,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent {
+
   botSubscription?: Subscription;
   form = new Form();
   game!: Game;
