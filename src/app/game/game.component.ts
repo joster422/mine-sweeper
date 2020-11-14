@@ -10,11 +10,10 @@ import { Cell, Form, Game, ValidatedForm } from '../models';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent {
-
-  botSubscription?: Subscription;
-  form = new Form();
   game!: Game;
+  form = new Form();
   newGameSubject = new Subject();
+  botSubscription?: Subscription;
   allowClicks = true;
 
   constructor(private domSanitizer: DomSanitizer) {
@@ -36,7 +35,7 @@ export class GameComponent {
       return;
 
     this.allowClicks = false;
-    await new Promise(r => setTimeout(() => r(), dugMine === true ? 5000 : 3000));
+    await new Promise(r => setTimeout(() => r(), dugMine ? 3000 : 3000));
     this.newGame();
     this.allowClicks = true;
   }

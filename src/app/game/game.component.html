@@ -7,7 +7,7 @@
     <ms-cell
       *ngFor="let cell of game.grid"
       [cell]="cell"
-      [isDisabled]="form.isBotEnabled"
+      [isDisabled]="form.isBotEnabled || !allowClicks"
       [style.grid-column]="cell.x + 1"
       [style.grid-row]="cell.y + 1"
       (check)="check(cell)"
@@ -16,7 +16,7 @@
   </div>
 </div>
 <footer>
-  <div class="space-between">
+  <div class="stats">
     <small>
       {{percentStillHidden}}% progress
     </small>

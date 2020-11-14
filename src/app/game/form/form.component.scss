@@ -5,15 +5,18 @@ form {
 
   > * {
     margin-bottom: 1em;
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 
   > div {
     text-align: center;
     > fc-button {
       display: inline-block;
+    }
+    > label {
+      color: darkslategrey;
+    }
+    :not(:last-child) {
+      margin-right: 0.5em;
     }
   }
 
@@ -22,29 +25,15 @@ form {
     border: 1px solid lightgrey;
     border-radius: 0.5em;
     box-shadow: 0.2em 0.2em 0.2em 0 lightgrey;
-  }
-}
 
-#settings {
-  > :first-child {
-    margin-bottom: 1em;
-    > div > fc-button {
-      display: inline-block;
-      &:not(:last-child) {
-        margin-right: 0.5em;
+    > div {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 1em;
+
+      @media (max-width: 520px) {
+        grid-template-columns: 1fr;
       }
     }
-  }
-  > :last-child {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1em;
-  }
-}
-
-#ghost-settings {
-  > :first-child {
-    margin-bottom: 1em;
   }
 }

@@ -22,8 +22,7 @@ export class FormComponent implements OnInit, OnDestroy {
   ];
   botSpeeds = [
     { key: 1, value: 'Slow' },
-    { key: 2, value: 'Normal' },
-    { key: 3, value: 'Fast' }
+    { key: 2, value: 'Fast' }
   ];
 
   constructor() { }
