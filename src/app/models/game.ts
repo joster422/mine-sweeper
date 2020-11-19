@@ -31,34 +31,54 @@ export class Game {
     do {
       const cell = this.grid[Math.floor(Math.random() * this.rows * this.columns)];
       if (!cell.mine)
-        this.dig(cell);
+        this.isMine(cell);
     }
     while (this.grid.every(cell => cell.hidden));
   }
 
-  async dig(cell: Cell): Promise<boolean | undefined> {
+  isMine(cell: Cell): boolean | null {
     if (!cell.hidden)
       throw new Error('only dig hidden cell');
+
     cell.hidden = false;
+
     if (cell.mine)
       return true;
-    if (cell.score === 0) {
-      const neighbors = this.getNeighbors(cell);
-      neighbors.forEach(neighbor => neighbor.hidden && this.dig(neighbor));
-    }
+
+    if (cell.score === 0)
+      this.revealScoreZero(cell);
+
     if (this.grid.filter(item => item.hidden).length === this.mines)
-      return undefined;
+      return null;
+
     return false;
   }
 
+  private revealScoreZero(cell: Cell): void {
+    const neighbors = this.getNeighbors(cell)
+      .filter(neighbor => neighbor.hidden);
 
-  async scan(cell: Cell): Promise<Cell[]> {
+    neighbors.forEach(neighbor => {
+      neighbor.hidden = false;
+    });
+
+    neighbors.forEach(neighbor => {
+      if (neighbor.score === 0)
+        this.revealScoreZero(neighbor);
+    });
+  }
+
+  scan(cell: Cell): Cell[] {
     if (cell.hidden)
       throw new Error('can not scan hidden cell');
-    const neighbors = await this.getNeighbors(cell);
-    const hiddenNeighbors = neighbors.filter(neighbor => neighbor.hidden);
-    if (hiddenNeighbors.filter(neighbor => neighbor.mark).length === cell.score)
+
+    const hiddenNeighbors = this.getNeighbors(cell)
+      .filter(neighbor => neighbor.hidden);
+    const hiddenMarkNeighbors = hiddenNeighbors
+      .filter(neighbor => neighbor.mark);
+    if (hiddenMarkNeighbors.length === cell.score)
       return hiddenNeighbors.filter(neighbor => !neighbor.mark);
+
     return [];
   }
 
