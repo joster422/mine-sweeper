@@ -1,6 +1,9 @@
 import { Game } from './game';
 
 describe('Game', () => {
+  it('should create a valid grid', () => {
+
+  });
   it('should create an instance', () => {
     expect(new Game(
       undefined,

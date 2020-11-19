@@ -8,12 +8,18 @@
   (click)="onCheck()"
   (contextmenu)="onMark($event)"
 >
-  <icon
-    *ngIf="cell.mark"
-    type="flag"
-    [fill]="['E50B00', '000000']"
-  ></icon>
-
+  <icon-stack>
+    <icon
+      *ngIf="cell.mark"
+      type="flag"
+      [fill]="['E50B00', '000000']"
+    ></icon>
+    <icon
+      *ngIf="isGameOver"
+      type="star"
+      [fill]="['E50B00', '000000']"
+    ></icon>
+  </icon-stack>
 </button>
 <button
   *ngIf="!cell.hidden"
@@ -23,12 +29,11 @@
   (contextmenu)="onScan($event)"
   (dblclick)="onScan($event)"
 >
-  <div *ngIf="cell.mine">
-    <icon
-      type="bomb"
-      [fill]="['E50B00', '000000']"
-    ></icon>
-  </div>
+  <icon
+    *ngIf="cell.mine"
+    type="bomb"
+    [fill]="['E50B00', '000000']"
+  ></icon>
   <span *ngIf="!cell.mine">
     {{ cell.score }}
   </span>

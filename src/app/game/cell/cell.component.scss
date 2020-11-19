@@ -6,6 +6,7 @@ button {
   border-width: medium;
   font-size: x-large;
   padding: 0.1em;
+  position: relative;
 
   &.safe {
     border: 0;
@@ -27,17 +28,28 @@ button {
   > icon {
     display: block !important;
   }
-
-  > div > icon[type="bomb"] {
-    animation: spin 1s linear infinite;
+  > icon[type="bomb"] {
+    animation: spinY 1.5s linear infinite;
+  }
+  > icon-stack ::ng-deep icon[type="star"] {
+    animation: spinX 1.2s linear infinite;
   }
 }
 
-@keyframes spin {
+@keyframes spinX {
   from {
-    transform: rotate(0deg);
+    transform: rotateX(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes spinY {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
   }
 }

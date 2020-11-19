@@ -40,18 +40,18 @@ export class FormComponent implements OnInit, OnDestroy {
   clickDifficulty(value: 1 | 2 | 3): void {
     switch (value) {
       case 1:
-        this.model.rows = 10;
-        this.model.columns = 10;
-        this.model.mines = 15;
+        this.model.rows = 8;
+        this.model.columns = 8;
+        this.model.mines = 10;
         break;
       case 2:
-        this.model.rows = 15;
-        this.model.columns = 15;
-        this.model.mines = 30;
+        this.model.rows = 12;
+        this.model.columns = 12;
+        this.model.mines = 24;
         break;
       case 3:
-        this.model.rows = 54;
-        this.model.columns = 36;
+        this.model.rows = 30;
+        this.model.columns = 16;
         this.model.mines = 200;
         break;
     }
@@ -66,10 +66,16 @@ export class FormComponent implements OnInit, OnDestroy {
     return 100;
   }
 
+  get minMines(): number {
+    if (!this.model.rows || !this.model.columns)
+      return 1;
+    return Math.floor(0.1 * (this.model.rows * this.model.columns));
+  }
+
   get maxMines(): number {
     if (!this.model.rows || !this.model.columns)
       return 10;
-    return this.model.rows * this.model.columns - 1;
+    return Math.floor(0.8 * (this.model.rows * this.model.columns));
   }
 
   get minColumns(): number {

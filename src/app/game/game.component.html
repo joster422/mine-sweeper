@@ -7,7 +7,8 @@
     <ms-cell
       *ngFor="let cell of game.grid"
       [cell]="cell"
-      [isDisabled]="form.isBotEnabled || !allowClicks"
+      [isDisabled]="form.isBotEnabled || isVictory !== null"
+      [isGameOver]="isVictory === true"
       [style.grid-column]="cell.x + 1"
       [style.grid-row]="cell.y + 1"
       (check)="check(cell)"
@@ -18,15 +19,18 @@
 <footer>
   <div class="stats">
     <small>
-      {{percentStillHidden}}% progress
+      ~{{percentStillHidden}}% progress
     </small>
+    <div *ngIf="showError">
+      Invalid game generated
+    </div>
     <small>
       {{percentMines}}% danger
     </small>
   </div>
   <ms-form
     [model]="form"
-    [disabled]="!allowClicks"
+    [disabled]="isVictory !== null"
     (restart)="newGame()"
   ></ms-form>
 </footer>

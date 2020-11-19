@@ -62,7 +62,7 @@
         [(ngModel)]="model.mines"
         (ngModelChange)="form.valid && restart$.next()"
         name="mines"
-        [min]="1"
+        [min]="minMines"
         [max]="maxMines"
       >
         Mines <icon
@@ -73,13 +73,13 @@
       </fc-number>
     </div>
   </fieldset>
-  <fieldset>
+  <!-- <fieldset>
     <legend title="Ghost Settings">
       <icon
         size="1em"
         type="user"
         [fill]="['247000', '000000']"
-      ></icon> Ghost Settings
+      ></icon> Ghost Player
     </legend>
     <div id="ghost-settings">
       <fc-choice
@@ -88,7 +88,7 @@
         name="isBotEnabled"
         [items]="booleans"
       >
-        Let me play
+        Let bot play
       </fc-choice>
       <fc-choice
         [(ngModel)]="model.botSpeed"
@@ -98,5 +98,5 @@
         Speed
       </fc-choice>
     </div>
-  </fieldset>
+  </fieldset> -->
 </form>

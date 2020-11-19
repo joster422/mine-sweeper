@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { from, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export class GameComponent {
   form = new Form();
   newGameSubject = new Subject();
   botSubscription?: Subscription;
-  allowClicks = true;
+  isVictory: boolean | null = null;
 
   constructor(private domSanitizer: DomSanitizer) {
     this.newGame();
@@ -27,22 +27,31 @@ export class GameComponent {
     return this.domSanitizer.bypassSecurityTrustStyle(`max(${ret}, 2em)`);
   }
 
-  async check(cell: Cell) {
-    if (!this.allowClicks) return;
+  get showError(): boolean {
+    const hiddenCells = this.game.grid
+      .filter(cell => cell.hidden);
 
-    const dugMine = await this.game.dig(cell);
-    if (dugMine === false)
+    return this.isVictory === null
+      && hiddenCells.length === this.form.mines;
+  }
+
+  async check(cell: Cell) {
+    if (this.isVictory !== null)
       return;
 
-    this.allowClicks = false;
-    await new Promise(r => setTimeout(() => r(), dugMine ? 3000 : 3000));
+    const wasMineChecked = this.game.isMine(cell);
+    if (wasMineChecked === false)
+      return;
+
+    this.isVictory = wasMineChecked === null;
+    await new Promise(r => setTimeout(() => r(), this.isVictory ? 6000 : 3000));
     this.newGame();
-    this.allowClicks = true;
+    this.isVictory = null;
   }
 
   async scan(cell: Cell) {
-    const cells = await this.game.scan(cell);
-    cells.forEach(item => item.hidden && this.check(item));
+    this.game.scan(cell)
+      .forEach(item => item.hidden && this.check(item));
   }
 
   newGame() {
@@ -83,7 +92,7 @@ export class GameComponent {
   private async botPlay(game: Game): Promise<boolean> {
     const cell = await game.getBotMove();
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const dugMine = await game.dig(cell);
+    const dugMine = await game.isMine(cell);
     if (dugMine === false) return this.botPlay(game);
     return dugMine === undefined;
   }

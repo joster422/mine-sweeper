@@ -9,6 +9,7 @@ import { Cell } from 'src/app/models';
 export class CellComponent {
   @Input() cell!: Cell;
   @Input() isDisabled = false;
+  @Input() isGameOver = false;
 
   @Output() check = new EventEmitter();
   @Output() scan = new EventEmitter();
