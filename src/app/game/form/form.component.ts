@@ -13,6 +13,7 @@ export class FormComponent implements OnInit, OnDestroy {
   @Input() model!: Form;
   @Input() disabled = false;
 
+  @Output() botStatus = new EventEmitter();
   @Output() restart = new EventEmitter();
 
   restart$ = new Subject();
@@ -21,8 +22,8 @@ export class FormComponent implements OnInit, OnDestroy {
     { key: false, value: 'No' }
   ];
   botSpeeds = [
-    { key: 1, value: 'Slow' },
-    { key: 2, value: 'Fast' }
+    { key: true, value: 'Fast' },
+    { key: false, value: 'Slow' },
   ];
 
   constructor() { }
@@ -69,7 +70,7 @@ export class FormComponent implements OnInit, OnDestroy {
   get minMines(): number {
     if (!this.model.rows || !this.model.columns)
       return 1;
-    return Math.floor(0.1 * (this.model.rows * this.model.columns));
+    return Math.floor(0.05 * (this.model.rows * this.model.columns));
   }
 
   get maxMines(): number {

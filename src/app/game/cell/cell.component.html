@@ -4,6 +4,7 @@
   class="hidden"
   [class.accent]="(cell.x + cell.y) % 2 === 0"
   [class.mark]="cell.mark"
+  [class.bot-focus]="cell.isBotFocus"
   [disabled]="isDisabled"
   (click)="onCheck()"
   (contextmenu)="onMark($event)"
@@ -20,11 +21,15 @@
       [fill]="['E50B00', '000000']"
     ></icon>
   </icon-stack>
+  <span>
+    {{ cell.probability ? (cell.probability * 100).toFixed(0) + '%' : '' }}
+  </span>
 </button>
 <button
   *ngIf="!cell.hidden"
   type="button"
   class="safe"
+  [class.bot-focus]="cell.isBotFocus"
   [disabled]="isDisabled"
   (contextmenu)="onScan($event)"
   (dblclick)="onScan($event)"

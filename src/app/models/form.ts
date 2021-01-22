@@ -3,5 +3,5 @@ export class Form {
   columns: number | null = 10;
   mines: number | null = 10;
   isBotEnabled = false;
-  botSpeed: 1 | 2 | 3 = 1;
+  isBotFast = true;
 }

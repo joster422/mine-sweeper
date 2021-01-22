@@ -3,6 +3,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { from, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Cell, Form, Game, ValidatedForm } from '../models';
+import { Bot } from '../models/bot';
 
 @Component({
   selector: 'ms-game',
@@ -11,6 +12,7 @@ import { Cell, Form, Game, ValidatedForm } from '../models';
 })
 export class GameComponent {
   game!: Game;
+  bot = new Bot();
   form = new Form();
   newGameSubject = new Subject();
   botSubscription?: Subscription;
@@ -39,14 +41,14 @@ export class GameComponent {
     if (this.isVictory !== null)
       return;
 
-    const wasMineChecked = this.game.isMine(cell);
+    const wasMineChecked = this.game.check(cell);
     if (wasMineChecked === false)
       return;
 
     this.isVictory = wasMineChecked === null;
-    await new Promise(r => setTimeout(() => r(), this.isVictory ? 6000 : 3000));
-    this.newGame();
+    await new Promise<void>(r => setTimeout(() => r(), this.isVictory ? 6000 : 3000));
     this.isVictory = null;
+    this.newGame();
   }
 
   async scan(cell: Cell) {
@@ -54,8 +56,9 @@ export class GameComponent {
       .forEach(item => item.hidden && this.check(item));
   }
 
-  newGame() {
+  newGame(doNotCreate = false) {
     this.newGameSubject.next();
+    this.newGameSubject.complete();
 
     if (this.botSubscription !== undefined)
       this.botSubscription.unsubscribe();
@@ -65,14 +68,22 @@ export class GameComponent {
     if (form.mines >= form.rows * form.columns - 1)
       throw new Error('invalid form');
 
-    this.game = new Game(undefined, form.rows, form.columns, form.mines);
-    if (!this.form.isBotEnabled) return;
-    this.botSubscription = from(this.botPlay(this.game)).pipe(takeUntil(this.newGameSubject)).subscribe(didWin => {
-      setTimeout(() => {
-        alert(`Bot ${didWin ? 'win' : 'lose'}`);
-        this.newGame();
+    if (!doNotCreate)
+      this.game = new Game(undefined, form.rows, form.columns, form.mines);
+
+    if (!this.form.isBotEnabled)
+      return;
+
+    this.botSubscription = from(this.botPlay(this.game))
+      .pipe(takeUntil(this.newGameSubject))
+      .subscribe({
+        next: async isVictory => {
+          this.isVictory = isVictory;
+          await new Promise<void>(r => setTimeout(() => r(), this.isVictory ? 6000 : 3000));
+          this.isVictory = null
+          this.newGame();
+        }
       });
-    });
   }
 
   get percentStillHidden(): string {
@@ -88,12 +99,13 @@ export class GameComponent {
     return (this.form.mines / (this.form.rows * this.form.columns) * 100).toFixed(0);
   }
 
-
   private async botPlay(game: Game): Promise<boolean> {
-    const cell = await game.getBotMove();
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const dugMine = await game.isMine(cell);
-    if (dugMine === false) return this.botPlay(game);
-    return dugMine === undefined;
+    const move = await this.bot.getMove(game, this.form.isBotFast);
+    const wasMineChecked = await game.check(move);
+
+    if (wasMineChecked === false)
+      return this.botPlay(game);
+
+    return wasMineChecked === null;
   }
 }

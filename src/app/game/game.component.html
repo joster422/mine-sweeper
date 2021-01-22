@@ -31,6 +31,7 @@
   <ms-form
     [model]="form"
     [disabled]="isVictory !== null"
+    (botStatus)="newGame(true)"
     (restart)="newGame()"
   ></ms-form>
 </footer>

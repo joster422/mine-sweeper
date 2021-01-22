@@ -1,6 +1,9 @@
 <form #form="ngForm">
   <div>
-    <fc-button (clicked)="form.valid && restart$.next()">
+    <fc-button
+      [isDisabled]="disabled"
+      (clicked)="form.valid && restart$.next()"
+    >
       Restart&nbsp;&nbsp;<icon
         size="1em"
         type="refresh"
@@ -12,17 +15,26 @@
     <label>
       Quick game
     </label>
-    <fc-button (clicked)="clickDifficulty(1)">
+    <fc-button
+      [isDisabled]="disabled"
+      (clicked)="clickDifficulty(1)"
+    >
       Easy
     </fc-button>
-    <fc-button (clicked)="clickDifficulty(2)">
+    <fc-button
+      [isDisabled]="disabled"
+      (clicked)="clickDifficulty(2)"
+    >
       Medium
     </fc-button>
-    <fc-button (clicked)="clickDifficulty(3)">
+    <fc-button
+      [isDisabled]="disabled"
+      (clicked)="clickDifficulty(3)"
+    >
       Hard
     </fc-button>
   </div>
-  <fieldset>
+  <fieldset [disabled]="disabled || model.isBotEnabled">
     <legend title="Settings">
       Settings <icon
         size="1em"
@@ -76,7 +88,7 @@
       </fc-number>
     </div>
   </fieldset>
-  <!-- <fieldset>
+  <fieldset [disabled]="disabled">
     <legend title="Ghost Settings">
       <icon
         size="1em"
@@ -87,19 +99,41 @@
     <div id="ghost-settings">
       <fc-choice
         [(ngModel)]="model.isBotEnabled"
-        (ngModelChange)="form.valid && restart$.next()"
+        (ngModelChange)="botStatus.emit()"
         name="isBotEnabled"
+        required
         [items]="booleans"
       >
-        Let bot play
+        Let me play
       </fc-choice>
       <fc-choice
-        [(ngModel)]="model.botSpeed"
-        name="botSpeed"
+        [(ngModel)]="model.isBotFast"
+        (ngModelChange)="botStatus.emit()"
+        name="isBotFast"
+        required
         [items]="botSpeeds"
       >
         Speed
       </fc-choice>
     </div>
-  </fieldset> -->
+  </fieldset>
+  <fieldset>
+    <legend>
+      Theme
+    </legend>
+    <div class="col-2">
+      <fc-color
+        [(ngModel)]="model.theme1"
+        name="theme1"
+      >
+        Primary
+      </fc-color>
+      <fc-color
+        [(ngModel)]="model.theme2"
+        name="theme2"
+      >
+        Secondary
+      </fc-color>
+    </div>
+  </fieldset>
 </form>
