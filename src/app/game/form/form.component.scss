@@ -13,7 +13,7 @@ form {
       display: inline-block;
     }
     > label {
-      color: darkslategrey;
+      color: whitesmoke;
     }
     :not(:last-child) {
       margin-right: 0.5em;
@@ -22,9 +22,9 @@ form {
 
   fieldset {
     padding: 1em;
-    border: 1px solid lightgrey;
+    border: 1px solid black;
     border-radius: 0.5em;
-    box-shadow: 0.2em 0.2em 0.2em 0 lightgrey;
+    box-shadow: 0.2em 0.2em 0.2em 0 black;
 
     > div {
       display: grid;
