@@ -9,6 +9,8 @@ button {
 
   &.safe {
     border: 0;
+    background-color: transparent;
+    color: inherit;
   }
 
   &.hidden {

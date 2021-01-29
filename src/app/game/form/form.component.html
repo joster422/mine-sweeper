@@ -34,14 +34,14 @@
       Hard
     </fc-button>
   </div>
-  <fieldset [disabled]="disabled || model.isBotEnabled">
+  <!-- <fieldset [disabled]="disabled || model.isBotEnabled">
     <legend title="Settings">
-      Settings <icon
+      <icon
         size="1em"
         type="gear"
         stroke="FFFFFF"
         [fillOpacity]="0"
-      ></icon>
+      ></icon> Settings
     </legend>
     <div id="settings">
       <fc-number
@@ -51,12 +51,7 @@
         [min]="minRows"
         [max]="maxRows"
       >
-        Columns <icon
-          size="1em"
-          type="column"
-          stroke="FFFFFF"
-          [fillOpacity]="0"
-        ></icon>
+        Columns
       </fc-number>
       <fc-number
         [(ngModel)]="model.columns"
@@ -65,12 +60,7 @@
         [min]="minColumns"
         [max]="maxColumns"
       >
-        Rows <icon
-          size="1em"
-          type="row"
-          stroke="FFFFFF"
-          [fillOpacity]="0"
-        ></icon>
+        Rows
       </fc-number>
       <fc-number
         [(ngModel)]="model.mines"
@@ -79,12 +69,7 @@
         [min]="minMines"
         [max]="maxMines"
       >
-        Mines <icon
-          size="1em"
-          type="bomb"
-          stroke="FFFFFF"
-          [fillOpacity]="0"
-        ></icon>
+        Mines
       </fc-number>
     </div>
   </fieldset>
@@ -93,7 +78,8 @@
       <icon
         size="1em"
         type="user"
-        [fill]="['247000', '000000']"
+        stroke="FFFFFF"
+        [fillOpacity]="0"
       ></icon> Ghost Player
     </legend>
     <div id="ghost-settings">
@@ -116,7 +102,7 @@
         Speed
       </fc-choice>
     </div>
-  </fieldset>
+  </fieldset> -->
   <!-- <fieldset>
     <legend>
       Theme
