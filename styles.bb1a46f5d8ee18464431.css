@@ -1,0 +1,1 @@
+body{font-family:Arial,sans-serif;margin:0;background:linear-gradient(45deg,#000,#501300) 0 0/400vw 500vh;animation:gradient 10s ease 0s infinite;color:#fff;position:absolute;top:0;right:0;bottom:0;left:0}@keyframes gradient{0%,to{background-position:0 50%}50%{background-position:50% 50%}}
