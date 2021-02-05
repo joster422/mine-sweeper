@@ -7,7 +7,7 @@
       Restart&nbsp;&nbsp;<icon
         size="1em"
         type="refresh"
-        [fill]="['247000', '000000']"
+        [fill]="[model.theme1, model.theme2]"
       ></icon>
     </fc-button>
   </div>
@@ -17,21 +17,21 @@
     </label>
     <fc-button
       [isDisabled]="disabled"
-      (clicked)="clickDifficulty(1)"
-    >
-      Easy
-    </fc-button>
-    <fc-button
-      [isDisabled]="disabled"
       (clicked)="clickDifficulty(2)"
     >
-      Medium
+      Less
     </fc-button>
     <fc-button
       [isDisabled]="disabled"
       (clicked)="clickDifficulty(3)"
     >
-      Hard
+      Normal
+    </fc-button>
+    <fc-button
+      [isDisabled]="disabled"
+      (clicked)="clickDifficulty(4)"
+    >
+      More
     </fc-button>
   </div>
   <!-- <fieldset [disabled]="disabled || model.isBotEnabled">
@@ -103,10 +103,10 @@
       </fc-choice>
     </div>
   </fieldset> -->
-  <!-- <fieldset>
-    <legend>
+  <fieldset>
+    <h3 class="mt-0">
       Theme
-    </legend>
+    </h3>
     <div class="col-2">
       <fc-color
         [(ngModel)]="model.theme1"
@@ -121,5 +121,5 @@
         Secondary
       </fc-color>
     </div>
-  </fieldset> -->
+  </fieldset>
 </form>

@@ -13,12 +13,12 @@
     <icon
       *ngIf="cell.mark"
       type="flag"
-      [fill]="['E50B00', '000000']"
+      [fill]="[themeColor1, themeColor2]"
     ></icon>
     <icon
       *ngIf="isGameOver"
       type="star"
-      [fill]="['E50B00', '000000']"
+      [fill]="[themeColor1, themeColor2]"
     ></icon>
   </icon-stack>
   <span>
@@ -37,7 +37,8 @@
   <icon
     *ngIf="cell.mine"
     type="bomb"
-    [fill]="['E50B00', '000000']"
+    [fill]="[themeColor1, themeColor2]"
+    stroke="FFFFFF"
   ></icon>
   <span *ngIf="!cell.mine">
     {{ cell.score }}

@@ -10,6 +10,8 @@ export class CellComponent {
   @Input() cell!: Cell;
   @Input() isDisabled = false;
   @Input() isGameOver = false;
+  @Input() themeColor1: string | null = null;
+  @Input() themeColor2: string | null = null;
 
   @Output() check = new EventEmitter();
   @Output() scan = new EventEmitter();

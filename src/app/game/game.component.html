@@ -9,6 +9,8 @@
       [cell]="cell"
       [isDisabled]="form.isBotEnabled || isVictory !== null"
       [isGameOver]="isVictory === true"
+      [themeColor1]="form.theme1"
+      [themeColor2]="form.theme2"
       [style.grid-column]="cell.x + 1"
       [style.grid-row]="cell.y + 1"
       (check)="check(cell)"

@@ -38,25 +38,18 @@ export class FormComponent implements OnInit, OnDestroy {
     this.restart$.complete();
   }
 
-  clickDifficulty(value: 1 | 2 | 3): void {
-    switch (value) {
-      case 1:
-        this.model.rows = 8;
-        this.model.columns = 8;
-        this.model.mines = 10;
-        break;
-      case 2:
-        this.model.rows = 12;
-        this.model.columns = 12;
-        this.model.mines = 24;
-        break;
-      case 3:
-        this.model.rows = 30;
-        this.model.columns = 16;
-        this.model.mines = 200;
-        break;
-    }
+  clickDifficulty(value: number): void {
+    const baseRowsColumns = 7 + value;
+    const baseMines = 8 * value;
+    const randomAdditionArray = [...Array(2).keys()];
+    this.model.rows = baseRowsColumns + this.randomFind(randomAdditionArray);
+    this.model.columns = baseRowsColumns + this.randomFind(randomAdditionArray);
+    this.model.mines = baseMines + this.randomFind(randomAdditionArray);
     this.restart$.next();
+  }
+
+  randomFind<T>(array: T[]): T {
+    return array[Math.floor(Math.random() * array.length)];
   }
 
   get minRows(): number {

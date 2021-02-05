@@ -1,0 +1,20 @@
+#background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  background: linear-gradient(-45deg, #301000, #000000) 0 0 / 150% 150%;
+  animation: 10s ease 0s infinite gradient;
+}
+
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+}
